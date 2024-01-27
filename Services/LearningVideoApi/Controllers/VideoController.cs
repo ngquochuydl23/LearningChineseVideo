@@ -8,8 +8,6 @@ using LearningVideoApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
 
 namespace LearningVideoApi.Controllers
 {
@@ -40,15 +38,20 @@ namespace LearningVideoApi.Controllers
         public IActionResult Get(
             [FromQuery] FromQueryAsCollection query,
             [FromQuery] string? topic,
-            [FromQuery] string? level)
+            [FromQuery] string? level,
+            [FromQuery] string? search)
         {
             var videos = _videoRepo
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Where(x => !x.IsDeleted)
-                .Where(x => (!string.IsNullOrEmpty(level) ? (x.Level.Equals(level)) : true));
-
+                .Where(x => !string.IsNullOrEmpty(level) 
+                    ? (x.Level.Equals(level)) 
+                    : true)
+                .Where(p => !string.IsNullOrEmpty(search) 
+                    ? p.SearchVector.Matches(EF.Functions.ToTsQuery(search + ":*")) 
+                    : true);
 
             if (query.Offset.HasValue && query.Limit.HasValue)
             {
@@ -96,6 +99,8 @@ namespace LearningVideoApi.Controllers
                     value.Duration,
                     value.Level));
 
+                
+
                 video.Subtitles = value.Subtitles.Select(subtitle =>
                     new VideoSubtitleEntity(
                         video.Id,
@@ -104,6 +109,7 @@ namespace LearningVideoApi.Controllers
                         subtitle.IsDefault))
                     .ToList();
 
+                video.PlainTextWithTopic = string.Join(",", value.Topics);
                 video.TopicVideos = value.Topics.Select(topic =>
                         AddTopicToVideo(video, topic))
                     .ToList();
@@ -134,6 +140,7 @@ namespace LearningVideoApi.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("mostPopular")]
         public IActionResult GetMostPopular([FromQuery] FromQueryAsCollection query)
         {
@@ -141,6 +148,19 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.ViewerCount)
+                .ToList();
+
+            return Ok(_mapper.Map<ICollection<VideoDto>>(videos));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("recentlyAdded")]
+        public IActionResult GetRecentlyAdded([FromQuery] FromQueryAsCollection query)
+        {
+            var videos = _videoRepo
+                .GetQueryableNoTracking()
+                .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 
             return Ok(_mapper.Map<ICollection<VideoDto>>(videos));

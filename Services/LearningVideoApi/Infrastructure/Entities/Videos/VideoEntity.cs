@@ -4,6 +4,7 @@ using LearningVideoApi.Infrastructure.Entities.Likes;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.WatchedVideos;
 using LearningVideoApi.Infrastructure.Seedworks;
+using NpgsqlTypes;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -42,6 +43,10 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
         public ICollection<WatchedVideoEntity> WatchedVideos { get; set; } = new List<WatchedVideoEntity>();
 
         public ICollection<TopicVideoEntity> TopicVideos { get; set; } = new List<TopicVideoEntity>();
+
+        public NpgsqlTsVector SearchVector { get; set; }
+
+        public string? PlainTextWithTopic { get; set; }
 
         public VideoEntity(
             string title,

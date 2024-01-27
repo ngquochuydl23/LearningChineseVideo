@@ -11,6 +11,15 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
             {
                 entity.ToTable("Video");
                 entity.HasKey(x => x.Id);
+
+                entity.HasGeneratedTsVectorColumn(p => p.SearchVector, "english", p => new
+                {
+                    p.Title,
+                    p.Description,
+                    p.Level
+                })
+                .HasIndex(p => p.SearchVector)
+                .HasMethod("GIN");
             });
 
 

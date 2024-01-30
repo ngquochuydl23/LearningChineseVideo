@@ -96,6 +96,8 @@ app.get("/storage/:filename", async function (req, res) {
         const cursor = gfs.find({ filename: req.params.filename });
         const file = await cursor.toArray();
 
+        console.log(file);
+
         if (!file.length)
             return res
                 .status(500)

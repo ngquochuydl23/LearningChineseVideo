@@ -21,7 +21,7 @@ const storage = new GridFsStorage({
                 if (err)
                     return reject(err);
 
-                const filename = buf.toString('hex') + file.originalname;
+                const filename = buf.toString('hex') + path.extname(file.originalname);
                 const fileInfo = {
                     filename: filename,
                     bucketName: 'uploads'
@@ -66,7 +66,7 @@ app.post("/storage-api/upload", upload.any(), async function (req, res) {
     try {
         var medias = await Promise.all(_.map(files, async (file, index) => {
             return {
-                url: config.serverUrl + file.fieldname,
+                url: config.serverUrl + file.filename,
                 mime: file.mimetype,
                 size: file.size,
             }

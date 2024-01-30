@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "env-cmd -f .env.local node ./src/index.js",
+    "start": "env-cmd -f .env.staging node ./src/index.js",
     "start:dev": "env-cmd -f .env.local nodemon ./src/index.js",
     "start:staging": "env-cmd -f .env.staging nodemon ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

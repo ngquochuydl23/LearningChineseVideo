@@ -29,6 +29,8 @@ services:
     ports:
       - 2501:2501
     restart: always
+    networks:
+      - mongo_net
 
   social-v2.clothes.store-react:
     image: social-v2.clothes.store-react

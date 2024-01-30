@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "rhYbkuP/RNfXVoZVmvypDAFQSPUQkyUJJTTbtnzrM8W0hoNCMN1vW5ouaFS6l8chq3r6A5mR3wtPYXbzlcYwnw==",
+  "dgSpecHash": "y+bSWZwFTm5NwoCJIrkH7RepAdxNOoaeAdFjXpnOvKKjltJE8W+GHJJHzI7176s4SoKI/VVcjp4Xg07RaZpUsQ==",
   "success": true,
-  "projectFilePath": "F:\\LearningChineseVideo\\Services\\LearningVideoApi\\LearningVideoApi.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Desktop\\LearningChineseVideo\\Services\\LearningVideoApi\\LearningVideoApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

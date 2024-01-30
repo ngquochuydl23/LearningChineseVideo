@@ -1,0 +1,15 @@
+{
+  "port": 2501,
+  "limitFileSize": 1000000000,
+  "useLocalStaticServe": true,
+  "serverUrl": "/storage/",
+  "fileExtensionCheck": {
+    "enabled": false,
+    "extensionsAllowed": [
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".gif"
+    ]
+  }
+}

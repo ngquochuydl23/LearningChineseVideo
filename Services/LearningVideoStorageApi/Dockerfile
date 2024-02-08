@@ -3,5 +3,5 @@ RUN npm install --global nodemon
 WORKDIR /learningChineseVideo
 COPY . .
 RUN yarn install
-EXPOSE 2501
+EXPOSE 2601
 CMD yarn start

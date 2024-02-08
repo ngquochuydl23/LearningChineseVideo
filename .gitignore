@@ -1,49 +1,19 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-## For Client directory
-# dependencies
-client/node_modules
-client/node_modules
-client/.pnp
-client/.pnp.js
-
-# testing
-client/coverage
-
-# production
-client/build
-
-# misc
-client/.DS_Store
-client/.env.local
-client/.env.development.local
-client/.env.test.local
-client/.env.production.local
-
-# logs
-client/npm-debug.log*
-client/yarn-debug.log*
-client/yarn-error.log*
-
-## For Server directory
 
 # dependencies
 Services/LearningVideoStorageApi/node_modules
+Services/LearningVideoStorageApi/uploads
+Services/LearningVideoStorageApi/.yarn
+
 
 #misc
 .vs
 .vscode
 
-Services/Social-v2.Clothes.UploadMediaApi/.env
 
-client/src/pages/dashboard/ListProduct.js
-Services/Social-v2.Clothes.UploadMediaApi/.yarn
+Clients/LearningChineseVideo/node_modules
 
-clients/Social-v2.Clothes.Admin/node_modules
-clients/Social-v2.Clothes.Store/node_modules
-
-
-Services/Social-v2.Clothes.Api/.vs
+Services/LearningVideoApi/.vs
 Services/LearningVideoApi/bin/*
 Services/LearningVideoApi/[Dd]ebug/
 Services/LearningVideoApi/[Dd]ebugPublic/

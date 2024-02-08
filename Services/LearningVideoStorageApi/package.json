@@ -1,51 +1,24 @@
 {
-  "name": "clothes.social-v2.upload",
+  "name": "nodejs-videostreamingserver",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "start": "env-cmd -f .env.staging node ./src/index.js",
-    "start:dev": "env-cmd -f .env.local nodemon ./src/index.js",
-    "start:staging": "env-cmd -f .env.staging nodemon ./src/index.js",
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/crypto-js": "^4.1.1",
-    "body-parser": "^1.20.0",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
-    "crypto-js": "^4.2.0",
-    "env-cmd": "^10.1.0",
     "express": "^4.18.1",
-    "express-fileupload": "^1.4.0",
-    "ffmpeg": "^0.0.4",
-    "ffprobe": "^1.1.2",
     "fs": "^0.0.1-security",
-    "get-video-info": "^1.0.0",
-    "gifsicle": "^5.2.1",
-    "gm": "^1.23.1",
-    "gridfs-stream": "^1.1.1",
-    "image-size": "^1.0.2",
-    "jwt-decode": "^4.0.0",
-    "jwt-encode": "^1.0.1",
-    "lodash": "^4.17.21",
-    "mime": "^3.0.0",
-    "mime-types": "^2.1.35",
-    "mongodb": "^6.3.0",
-    "mongoose": "^7.4.1",
-    "morgan": "^1.10.0",
+    "mime": "^4.0.1",
     "multer": "^1.4.5-lts.1",
-    "multer-gridfs-storage": "^5.0.2",
-    "pngquant-bin": "^6.0.1",
-    "sha256": "^0.2.0",
-    "sharp": "^0.32.4"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.1"
-  },
-  "resolutions": {
-    "multer-gridfs-storage/mongodb": "^5.9.1"
+    "nodemon": "^2.0.20",
+    "path": "^0.12.7",
+    "slug": "^8.2.3"
   }
 }

@@ -249,6 +249,9 @@ namespace LearningVideoApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PlainTextWithTopic")
+                        .HasColumnType("text");
+
                     b.Property<NpgsqlTsVector>("SearchVector")
                         .IsRequired()
                         .ValueGeneratedOnAddOrUpdate()
@@ -291,6 +294,10 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
 
@@ -317,6 +324,43 @@ namespace LearningVideoApi.Migrations
                     b.HasIndex("VideoId");
 
                     b.ToTable("VideoSubtitle", (string)null);
+                });
+
+            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Vocabularies.VocabularyEntity", b =>
+                {
+                    b.Property<string>("OriginWord")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Example")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("OppositeMeaning")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pinyin")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SimiliarMeaning")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VietnameseMean")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WordType")
+                        .HasColumnType("text");
+
+                    b.HasKey("OriginWord");
+
+                    b.ToTable("Vocabulary", (string)null);
                 });
 
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.WatchedVideos.WatchedVideoEntity", b =>

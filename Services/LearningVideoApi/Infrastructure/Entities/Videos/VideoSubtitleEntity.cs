@@ -4,6 +4,8 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
 {
     public class VideoSubtitleEntity : Entity<long>
     {
+        public string FileName { get; set; }
+
         public string VideoId { get; set; }
 
         public string Url { get; set; }
@@ -15,12 +17,13 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
         public VideoEntity Video { get; set; }
 
 
-        public VideoSubtitleEntity(string videoId, string url, string srcLang, bool isDefault)
+        public VideoSubtitleEntity(string videoId, string url, string srcLang, bool isDefault, string fileName)
         {
             VideoId = videoId;
             Url = url;
             SrcLang = srcLang;
             IsDefault = isDefault;
+            FileName = fileName;
         }
     }
 }

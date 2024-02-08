@@ -3,10 +3,12 @@ using LearningVideoApi.Dtos.Comment;
 using LearningVideoApi.Dtos.MyFavourite;
 using LearningVideoApi.Dtos.User;
 using LearningVideoApi.Dtos.Video;
+using LearningVideoApi.Dtos.Vocabulary;
 using LearningVideoApi.Infrastructure.Entities.Comments;
 using LearningVideoApi.Infrastructure.Entities.Likes;
 using LearningVideoApi.Infrastructure.Entities.Users;
 using LearningVideoApi.Infrastructure.Entities.Videos;
+using LearningVideoApi.Infrastructure.Entities.Vocabularies;
 
 namespace LearningVideoApi.Extensions
 {
@@ -21,6 +23,8 @@ namespace LearningVideoApi.Extensions
             CreateMap<VideoSubtitleEntity, SubtitleDto>();
             CreateMap<CommentEntity, CommentDto>();
             CreateMap<LikeEntity, LikeDto>();
+
+            CreateMap<VocabularyEntity, VocabularyDto>();
         }
     }
 }

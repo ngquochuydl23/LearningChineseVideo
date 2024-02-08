@@ -33,7 +33,6 @@ namespace LearningVideoApi.Controllers
             _unitOfWork = unitOfWork;
         }
 
-
         [HttpGet]
         public IActionResult Get(
             [FromQuery] FromQueryAsCollection query,
@@ -45,6 +44,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
+                .OrderByDescending(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
                 .Where(x => !string.IsNullOrEmpty(level) 
                     ? (x.Level.Equals(level)) 
@@ -71,6 +71,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
+                .Include(x => x.Subtitles)
                 .FirstOrDefault(x => x.Id.Equals(id) && !x.IsDeleted)
                     ?? throw new AppException("Video does not exist");
 
@@ -99,14 +100,13 @@ namespace LearningVideoApi.Controllers
                     value.Duration,
                     value.Level));
 
-                
-
                 video.Subtitles = value.Subtitles.Select(subtitle =>
                     new VideoSubtitleEntity(
                         video.Id,
                         subtitle.Url,
                         subtitle.SrcLang,
-                        subtitle.IsDefault))
+                        subtitle.IsDefault,
+                        subtitle.FileName))
                     .ToList();
 
                 video.PlainTextWithTopic = string.Join(",", value.Topics);
@@ -117,7 +117,7 @@ namespace LearningVideoApi.Controllers
                 _videoRepo.SaveChanges();
                 _unitOfWork.Complete();
 
-                return Ok(_mapper.Map<VideoDto>(video));
+                return Ok(video);
             }
         }
 
@@ -146,11 +146,22 @@ namespace LearningVideoApi.Controllers
         {
             var videos = _videoRepo
                 .GetQueryableNoTracking()
-                .Where(x => !x.IsDeleted)
-                .OrderByDescending(x => x.ViewerCount)
-                .ToList();
+                .Include(x => x.TopicVideos)
+                .ThenInclude(topicVideo => topicVideo.Topic)
+                .Where(x => !x.IsDeleted);
+          
 
-            return Ok(_mapper.Map<ICollection<VideoDto>>(videos));
+            if (query.Offset.HasValue && query.Limit.HasValue)
+            {
+                videos = videos
+                    .Skip(query.Offset.Value)
+                    .Take(query.Limit.Value);
+            }
+
+            videos = videos
+                .OrderByDescending(x => x.ViewerCount);
+
+            return Ok(_mapper.Map<ICollection<VideoDto>>(videos.ToList()));
         }
 
         [AllowAnonymous]
@@ -159,11 +170,20 @@ namespace LearningVideoApi.Controllers
         {
             var videos = _videoRepo
                 .GetQueryableNoTracking()
-                .Where(x => !x.IsDeleted)
-                .OrderByDescending(x => x.CreatedAt)
-                .ToList();
+                .Include(x => x.TopicVideos)
+                .ThenInclude(topicVideo => topicVideo.Topic)
+                .Where(x => !x.IsDeleted);
+     
 
-            return Ok(_mapper.Map<ICollection<VideoDto>>(videos));
+            if (query.Offset.HasValue && query.Limit.HasValue)
+            {
+                videos = videos
+                    .Skip(query.Offset.Value)
+                    .Take(query.Limit.Value);
+            }
+
+            videos = videos.OrderByDescending(x => x.CreatedAt);
+            return Ok(_mapper.Map<ICollection<VideoDto>>(videos.ToList()));
         }
 
         [HttpPost("{id}/view")]

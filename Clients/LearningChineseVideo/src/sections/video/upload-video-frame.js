@@ -24,6 +24,8 @@ const UploadVideoFrame = ({ onUploadedVideo }) => {
             return;
 
         uploadFile(file, (progress, total) => {
+
+
             setRaw({
                 filename: file.name,
                 hasLocalVideo: true,
@@ -37,7 +39,7 @@ const UploadVideoFrame = ({ onUploadedVideo }) => {
                 const media = medias[0];
                 setRemoteVideo({
                     videoUrl: media.url,
-                    mimetype: media.mime,
+                    mimetype: media.mimetype,
                     duration: 0
                 });
             })
@@ -137,7 +139,6 @@ const UploadVideoFrame = ({ onUploadedVideo }) => {
                             justifyContent: 'center',
                             backgroundColor: 'black'
                         }}
-                        playing
                         controls={true}
                         url={readMediaUrl(remoteVideo?.videoUrl)}
                     />)

@@ -2,8 +2,11 @@ import axios from "axios";
 import _ from "lodash";
 
 export const http = axios.create({
-    baseURL: 'https://clothes-dev.social-v2.com/storage-api/'
+    baseURL: process.env.NEXT_PUBLIC_STORAGE_API_END_POINT
 })
+
+// NEXT_PUBLIC_STORAGE_API_END_POINT = "http://localhost:2601/storage-api/"
+// NEXT_PUBLIC_MEDIA_DOMAIN = "http://localhost:2601/"
 
 
 http.interceptors.request.use(async function (config) {

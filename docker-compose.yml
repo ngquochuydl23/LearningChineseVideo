@@ -21,11 +21,13 @@ services:
     restart: always 
 
   learning-chinese-video-api:
-    image:  learning-chinese-video-api
-    container_name:  learning-chinese-video-api
+    image: learning-chinese-video-api
+    container_name: learning-chinese-video-api
     build:
       context: ./Services/LearningVideoApi
       dockerfile: Dockerfile
     ports:
       - 2501:80
     restart: always 
+  
+

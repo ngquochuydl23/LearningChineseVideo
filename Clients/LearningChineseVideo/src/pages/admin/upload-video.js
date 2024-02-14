@@ -78,6 +78,8 @@ const Page = () => {
         }
     });
 
+    console.log(formik.values);
+
     return (
         <>
             <Head>
@@ -181,6 +183,7 @@ const Page = () => {
                                 </Box>
                                 <div>
                                     <UploadVideoFrame onUploadedVideo={(data) => {
+                                        console.log(data);
                                         formik.setFieldValue('videoUrl', data.videoUrl);
                                         formik.setFieldValue('duration', data.duration);
                                         formik.setFieldValue('mimetype', data.mimetype);

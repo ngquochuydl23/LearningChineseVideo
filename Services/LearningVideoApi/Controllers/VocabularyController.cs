@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using LearningVideoApi.Dtos.Vocabulary;
-using LearningVideoApi.Infrastructure.Entities.Topics;
-using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Entities.Vocabularies;
 using LearningVideoApi.Infrastructure.Exceptions;
 using LearningVideoApi.Infrastructure.Seedworks;
-using LearningVideoApi.Migrations;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -31,7 +28,7 @@ namespace LearningVideoApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetVoca()
+        public IActionResult GetVocabularies()
         {
             var vocas = _vocaRepo
                 .GetQueryableNoTracking()
@@ -39,6 +36,18 @@ namespace LearningVideoApi.Controllers
                 .ToList();
 
             return Ok(_mapper.Map<ICollection<VocabularyDto>>(vocas));
+        }
+
+        [HttpGet("{originWord}")]
+        public IActionResult GetVoca(string originWord)
+        {
+            var voca = _vocaRepo
+                .GetQueryableNoTracking()
+                .FirstOrDefault(x => !x.IsDeleted && x.OriginWord.Equals(originWord))
+                    ?? throw new AppException("Vocabulary does not exist");
+
+
+            return Ok(_mapper.Map<VocabularyDto>(voca));
         }
 
         [HttpPost]

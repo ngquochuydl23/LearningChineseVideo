@@ -17,7 +17,8 @@ const TranscriptItem = ({
     trans,
     startTime,
     selected,
-    onSeek
+    onSeek,
+
 }) => {
     return (
         <Box
@@ -90,15 +91,12 @@ const TranscriptItem = ({
 const VideoPlayer = ({
     videoUrl,
     subtitles,
-    durationMls,
+    duration,
     thumbnail
 }) => {
-
-    console.log(subtitles);
-
     const videoPlayerRef = useRef();
     const [currentTextSub, setCurrentTextSub] = useState();
-
+    const [playedSeconds, setPlayedSeconds] = useState(0);
     const [transcripts, setTranscripts] = useState({
         chinese: [],
         pinyin: [],
@@ -110,11 +108,14 @@ const VideoPlayer = ({
 
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
-
         if (!videoElement)
             return;
 
         const currentTime = state.playedSeconds;
+        setPlayedSeconds(currentTime);
+
+
+
         const cues = videoElement.textTracks[0].cues;
         const currentCue = _.find(cues, x => currentTime >= x.startTime && currentTime <= x.endTime)
 
@@ -125,10 +126,12 @@ const VideoPlayer = ({
 
     const seekTo = (startTime) => {
         if (videoPlayerRef.current !== null) {
-            var milliseconds = timeVttToMilisecond(startTime);
-
-            videoPlayerRef.current?.seekTo(0.5, 'fraction');
+            videoPlayerRef.current?.seekTo(startTime, 'seconds');
         }
+
+        var scrollPanel = document.getElementById('ScrollPanel');
+        var topPos = scrollPanel.offsetTop;
+        console.log(scrollPanel);
     }
 
     useEffect(() => {
@@ -189,8 +192,7 @@ const VideoPlayer = ({
                         },
                     }}
                     light={thumbnail}
-                    url={"https://vjs.zencdn.net/v/oceans.mp4"}
-                //  url={readMediaUrl(videoUrl)}
+                    url={readMediaUrl(videoUrl)}
                 />
                 <Stack
                     justifyContent="center"
@@ -222,6 +224,7 @@ const VideoPlayer = ({
                 </Stack>
             </Box>
             <ScrollPanel
+                id="ScrollPanel"
                 style={{
                     display: 'flex',
                     flex: 1,
@@ -242,14 +245,17 @@ const VideoPlayer = ({
                         spacing="10px"
                         direction="column">
                         {_.map(transcripts.chinese, (item, idx) => {
+
                             return (
                                 <TranscriptItem
-                                    selected={idx === 2}
+                                    selected={playedSeconds >= item.start && playedSeconds <= item.end}
                                     orgin={item.text}
                                     pinyin={transcripts.pinyin[idx].text}
                                     startTime={item.start}
                                     trans={transcripts.vietnamese[idx].text}
-                                    onSeek={(startTime) => { seekTo(startTime) }}
+                                    onSeek={(startTime) => {
+                                        seekTo(startTime)
+                                    }}
                                     key={item.startTime}
                                 />
                             );

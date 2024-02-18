@@ -1,0 +1,87 @@
+import { Box, Button, Popover, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
+
+const Word = ({
+    word, onClick, detail
+}) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [vocabulary, setVocabulary] = useState();
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+        onClick();
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
+
+
+    useEffect(() => {
+        setVocabulary({});
+    }, [])
+
+    return (
+        <PopupState variant="popover" popupId="demo-popup-popover">
+            {(popupState) => (
+                <div>
+                    <Typography
+                        {...bindTrigger(popupState)}
+                        sx={{
+                            color: '#06AED4',
+                            height: '40px',
+                            fontWeight: '600',
+                            fontSize: "25px",
+                            '&:hover': {
+                                backgroundColor: 'rgb(6, 174, 212, 0.2)',
+                                color: '#06AED4',
+                                paddingX: '7px',
+                                borderRadius: '10px'
+                            },
+                            "&.Mui-active": {
+                                backgroundColor: 'rgb(6, 174, 212, 0.2)',
+                                color: '#06AED4',
+                                paddingX: '7px',
+                                borderRadius: '10px'
+                            },
+                        }}
+                        variant="text">
+                        {word}
+                    </Typography>
+                    <Popover
+                        {...bindPopover(popupState)}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}>
+                        <Box sx={{ width: '300px', p: 2 }}>
+                            <Typography
+                                fontWeight="600"
+                                fontSize="20px">{word}</Typography>
+                            {vocabulary &&
+                                <p>
+                                    biểu lộ <br />
+                                    Add
+                                    show, manifest, demonstrate, indicate, externalize, develop
+                                </p>
+                            }
+
+
+
+                        </Box>
+
+                    </Popover>
+                </div>
+            )}
+        </PopupState>
+    )
+}
+
+export default Word;

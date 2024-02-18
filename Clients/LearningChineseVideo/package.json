@@ -39,6 +39,7 @@
     "jieba-zh-tw": "^1.0.12",
     "js-jieba": "^1.0.12",
     "lodash": "^4.17.21",
+    "material-ui-popup-state": "^5.0.10",
     "millify": "^6.1.0",
     "moment": "^2.29.4",
     "mui-chips-input": "^2.1.3",

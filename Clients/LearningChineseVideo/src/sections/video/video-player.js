@@ -10,6 +10,7 @@ import _ from "lodash";
 import { timeVttToMilisecond } from "src/utils/time-util";
 import axios from "axios";
 import webvtt from 'node-webvtt';
+import Word from "./word";
 
 const TranscriptItem = ({
     orgin,
@@ -91,7 +92,6 @@ const TranscriptItem = ({
 const VideoPlayer = ({
     videoUrl,
     subtitles,
-    duration,
     thumbnail
 }) => {
     const videoPlayerRef = useRef();
@@ -105,7 +105,7 @@ const VideoPlayer = ({
     });
 
     const [playing, setPlaying] = useState(true);
-
+    console.log(subtitles);
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
         if (!videoElement)
@@ -113,8 +113,6 @@ const VideoPlayer = ({
 
         const currentTime = state.playedSeconds;
         setPlayedSeconds(currentTime);
-
-
 
         const cues = videoElement.textTracks[0].cues;
         const currentCue = _.find(cues, x => currentTime >= x.startTime && currentTime <= x.endTime)
@@ -136,10 +134,8 @@ const VideoPlayer = ({
 
     useEffect(() => {
         Promise.all(_.map(subtitles, subtitle => axios.get(readMediaUrl(subtitle.url))))
-            .then(async ([chinese, pinyin, vietnamese]) => {
-
-                const segCues = null;
-
+            .then(async ([seg, chinese, pinyin, vietnamese]) => {
+                
                 const chineseCues = webvtt.parse(chinese.data, { strict: false }).cues;
                 const pinyinCues = webvtt.parse(pinyin.data, { strict: false }).cues;
                 const vietnameseCues = webvtt.parse(vietnamese.data, { strict: false }).cues;
@@ -188,6 +184,7 @@ const VideoPlayer = ({
                             tracks: _.map(subtitles, subtitle => ({
                                 ...subtitle,
                                 src: readMediaUrl(subtitle.url),
+                                default: subtitle.isDefault
                             })),
                         },
                     }}
@@ -204,22 +201,8 @@ const VideoPlayer = ({
                         display: 'flex',
 
                     }}>
-                    {currentTextSub && _.map(currentTextSub.split(' '), word => (
-                        <Typography
-                            sx={{
-                                color: '#06AED4',
-                                height: '40px',
-                                fontWeight: '600',
-                                fontSize: "25px",
-                                '&:hover': {
-                                    backgroundColor: 'rgb(6, 174, 212, 0.2)',
-                                    color: '#06AED4',
-                                    paddingX: '7px'
-                                }
-                            }}
-                            variant="text">
-                            {word}
-                        </Typography>
+                    {currentTextSub && _.map(currentTextSub.split('-'), word => (
+                        <Word word={word} />
                     ))}
                 </Stack>
             </Box>

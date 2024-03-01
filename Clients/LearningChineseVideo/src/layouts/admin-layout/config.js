@@ -1,6 +1,7 @@
 import { SvgIcon } from '@mui/material';
-import PeopleIcon from '@mui/icons-material/People';
+import TranslateIcon from '@mui/icons-material/Translate';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import UploadIcon from '@mui/icons-material/Upload';
 
 export const items = [
   {
@@ -17,7 +18,16 @@ export const items = [
     path: '/admin/upload-video',
     icon: (
       <SvgIcon fontSize="small">
-        <PeopleIcon />
+        <UploadIcon />
+      </SvgIcon>
+    )
+  },
+  {
+    title: 'Từ điển',
+    path: '/admin/dictionary',
+    icon: (
+      <SvgIcon fontSize="small">
+        <TranslateIcon />
       </SvgIcon>
     )
   }

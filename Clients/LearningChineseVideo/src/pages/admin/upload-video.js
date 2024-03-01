@@ -77,9 +77,7 @@ const Page = () => {
             }
         }
     });
-
-    console.log(formik.values);
-
+    
     return (
         <>
             <Head>

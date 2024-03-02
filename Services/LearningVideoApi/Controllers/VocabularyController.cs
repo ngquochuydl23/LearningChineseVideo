@@ -92,6 +92,8 @@ namespace LearningVideoApi.Controllers
             voca.Example = value.Example;
             voca.LastUpdated = DateTime.UtcNow;
 
+
+            _vocaRepo.SaveChanges();
             return Ok(_mapper.Map<VocabularyDto>(voca));
         }
 

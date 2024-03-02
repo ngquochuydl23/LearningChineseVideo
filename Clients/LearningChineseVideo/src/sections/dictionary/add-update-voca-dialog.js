@@ -7,7 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
 import { Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
-import { addVoca } from 'src/services/api/voca-api';
+import { addVoca, editVocabulary } from 'src/services/api/voca-api';
 import AlertDialog from 'src/components/alert-dialog';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -51,8 +51,9 @@ export default function AddUpdateVocaDialog({
                         }
                     })
             } else {
-                editedVoca(originWord, values)
+                editVocabulary(editedVoca.originWord, values)
                     .then((res) => {
+                        console.log(res);
                         onAdded();
                         formik.setValues({
                             originWord: '',
@@ -63,12 +64,10 @@ export default function AddUpdateVocaDialog({
                             oppositeMeaning: '',
                             example: ''
                         })
-                        handleClose()
+                        handleClose();
                     })
                     .catch(err => {
-                        if (err === 'Vocabulary is already exist') {
-                            setShowAlert(true);
-                        }
+                        console.log(err);
                     })
             }
         }

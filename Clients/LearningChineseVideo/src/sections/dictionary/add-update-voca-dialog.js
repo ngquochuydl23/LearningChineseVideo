@@ -91,7 +91,6 @@ export default function AddUpdateVocaDialog({
                     Thêm từ vựng
                 </DialogTitle>
                 <DialogContent sx={{ minWidth: '500px' }}>
-
                     <Stack spacing="20px">
                         <TextField
                             error={!!(formik.touched.originWord && formik.errors.originWord)}

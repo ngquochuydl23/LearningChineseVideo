@@ -17,12 +17,13 @@ import _ from 'lodash';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from 'src/hooks/use-auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
 import CustomAvatar from 'src/components/custom-avt';
 import { uploadFile } from 'src/services/api/upload-api';
+import { editUserInfo } from 'src/services/api/user-api';
 const Page = () => {
     const [openSuccessAlert, setOpenSuccessAlert] = useState(false);
     const { user } = useAuth();
@@ -38,31 +39,25 @@ const Page = () => {
             birthday: undefined,
             avatar: undefined
         },
-        validationSchema: Yup.object().shape({
-            fullName: Yup.string()
-                .required('Vui lòng nhập họ tên'),
-            phoneNumber: Yup.string()
-                .required('Vui lòng nhập số điện thoại'),
-            email: Yup.string()
-                .email('Vui lòng nhập đúng định dạng')
-                .required('Vui lòng nhập địa chỉ chi tiết'),
-            gender: Yup.number()
-                .oneOf([0, 1]),
-            avatar: Yup.string()
-        }),
-        onSubmit: async values => {
-
-
-
-
+        onSubmit: values => {
+            editUserInfo(values)
+                .then((res) => console.log(res))
+                .catch(err => console.log(err));
         },
     });
+
+
+
+    useEffect(() => {
+        if (user) {
+            formik.setValues(user)
+        }
+    }, [])
+
     return (
         <>
             <Head>
-                <title>
-                    Tài khoản
-                </title>
+                <title>Tài khoản</title>
             </Head>
             <Box>
                 <Container maxWidth="sm">

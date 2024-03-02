@@ -45,9 +45,7 @@ const ProductDetailPage = () => {
     return (
         <>
             <Head>
-                <title>
-                    {video.title}
-                </title>
+                <title> {video.title}</title>
             </Head>
             <Box>
                 <VideoPlayer

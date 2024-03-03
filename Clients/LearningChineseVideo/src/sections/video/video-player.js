@@ -153,10 +153,10 @@ const VideoPlayer = ({
         Promise.all(_.map(subtitles, subtitle => axios.get(readMediaUrl(subtitle.url))))
             .then(async ([seg, chinese, pinyin, vietnamese]) => {
 
-                const segCues = webvtt.parse(seg.data, { strict: false }).cues;
-                const chineseCues = webvtt.parse(chinese.data, { strict: false }).cues;
-                const pinyinCues = webvtt.parse(pinyin.data, { strict: false }).cues;
-                const vietnameseCues = webvtt.parse(vietnamese.data, { strict: false }).cues;
+                const segCues = webvtt.parse(seg.data, { strict: true }).cues;
+                const chineseCues = webvtt.parse(chinese.data, { strict: true }).cues;
+                const pinyinCues = webvtt.parse(pinyin.data, { strict: true }).cues;
+                const vietnameseCues = webvtt.parse(vietnamese.data, { strict: true }).cues;
 
                 setTranscripts({
                     seg: segCues,
@@ -170,7 +170,7 @@ const VideoPlayer = ({
             });
     }, [])
 
-
+    console.log(transcripts);
     return (
         <Stack
             display="flex"

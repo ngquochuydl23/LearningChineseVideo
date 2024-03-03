@@ -46,6 +46,7 @@
     "next": "13.1.6",
     "node-pre-gyp": "^0.17.0",
     "node-webvtt": "^1.9.4",
+    "notistack": "^3.0.1",
     "nprogress": "0.2.0",
     "primereact": "^10.2.1",
     "prop-types": "15.8.1",

@@ -9,10 +9,9 @@ import { useNProgress } from 'src/hooks/use-nprogress';
 import { createTheme } from 'src/theme';
 import { createEmotionCache } from 'src/utils/create-emotion-cache';
 import 'simplebar-react/dist/simplebar.min.css';
-import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
+import { PrimeReactProvider } from 'primereact/api';
 import "primereact/resources/themes/lara-light-cyan/theme.css";
-import { useEffect } from 'react';
-import { useAuth } from 'src/hooks/use-auth';
+import { SnackbarProvider, VariantType, useSnackbar } from 'notistack';
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -39,16 +38,18 @@ const App = (props) => {
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <PrimeReactProvider>
           <AuthProvider>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <AuthConsumer>
-                {
-                  (auth) => auth.isLoading
-                    ? <SplashScreen />
-                    : getLayout(<Component {...pageProps} />)
-                }
-              </AuthConsumer>
-            </ThemeProvider>
+            <SnackbarProvider maxSnack={3}>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <AuthConsumer>
+                  {
+                    (auth) => auth.isLoading
+                      ? <SplashScreen />
+                      : getLayout(<Component {...pageProps} />)
+                  }
+                </AuthConsumer>
+              </ThemeProvider>
+            </SnackbarProvider>
           </AuthProvider>
         </PrimeReactProvider>
 

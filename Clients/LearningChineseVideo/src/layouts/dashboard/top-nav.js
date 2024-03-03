@@ -54,25 +54,16 @@ export const TopNav = (props) => {
                     sx={{
                         minHeight: TOP_NAV_HEIGHT,
                         px: 2
-                    }}
-                >
+                    }}>
                     <Stack
                         alignItems="center"
                         direction="row"
-                        spacing={2}
-                    >
+                        spacing={2}>
                         <IconButton onClick={onNavOpen}>
                             <SvgIcon fontSize="small">
                                 <Bars3Icon />
                             </SvgIcon>
                         </IconButton>
-                        <Tooltip title="Search">
-                            <IconButton>
-                                <SvgIcon fontSize="small">
-                                    <MagnifyingGlassIcon />
-                                </SvgIcon>
-                            </IconButton>
-                        </Tooltip>
                     </Stack>
                     <Stack
                         alignItems="center"

@@ -105,7 +105,7 @@ const VideoPlayer = ({
     });
 
     const [playing, setPlaying] = useState(true);
-    console.log(subtitles);
+
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
         if (!videoElement)

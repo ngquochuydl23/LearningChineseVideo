@@ -91,7 +91,7 @@ export const VocaTable = (props) => {
                       {item.vietnameseMean}
                     </TableCell>
                     <TableCell>
-                      
+                      {item.sinoVietnamese}
                     </TableCell>
                     <TableCell>
                       {item.wordType}

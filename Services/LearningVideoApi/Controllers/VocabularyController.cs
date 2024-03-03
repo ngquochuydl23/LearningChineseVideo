@@ -32,6 +32,7 @@ namespace LearningVideoApi.Controllers
         {
             var vocas = _vocaRepo
                 .GetQueryableNoTracking()
+                .OrderBy(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
                 .ToList();
 

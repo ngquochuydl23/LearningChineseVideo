@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import { getVocabulary } from "src/services/api/vocabulary";
 import _ from "lodash";
+import { getVoca } from "src/services/api/voca-api";
 
 const Word = ({
     word, onClick, detail, onClose
 }) => {
+    const [error, setError] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [vocabulary, setVocabulary] = useState();
     const handleClick = (event) => {
@@ -30,12 +32,15 @@ const Word = ({
     }
 
     useEffect(() => {
-        getVocabulary('%E6%88%91')
+        getVocabulary(word)
             .then((res) => {
-
+                console.log(res);
                 setVocabulary(res);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setError(err);
+            });
     }, [])
 
     return (
@@ -79,7 +84,7 @@ const Word = ({
                             <Typography
                                 fontWeight="600"
                                 fontSize="20px">{word}</Typography>
-                            {vocabulary &&
+                            {(vocabulary && !error) &&
                                 <div>
                                     <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}</p>
                                     <p style={{ fontSize: '14px' }}>Từ loại: {vocabulary.wordType}</p>
@@ -94,6 +99,9 @@ const Word = ({
                                     </div>
 
                                 </div>
+                            } 
+                            {error &&
+                                <div>Không tìm thấy tự vựng</div>
                             }
                         </Box>
 

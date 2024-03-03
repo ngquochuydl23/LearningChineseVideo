@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AbKySsMGrYTZ77M3xShC4LQWt7xM8CvZp1PqLtmd0uN+d0AKLEo7l3hpBj+jLSvGhkMrpums94N3NwzhQT9Rlg==",
+  "dgSpecHash": "kzLHxisnPfqdV00lcJyY2oc0gbd6DxtIp+X9Mjj0CC0pPeOXYBiszTgwu1aXQWO8WxXU/mTzoa93x3jay6n0Aw==",
   "success": true,
-  "projectFilePath": "c:\\Users\\admin\\Music\\LearningChineseVideo\\Services\\LearningVideoApi\\LearningVideoApi.csproj",
+  "projectFilePath": "C:\\Users\\admin\\Music\\LearningChineseVideo\\Services\\LearningVideoApi\\LearningVideoApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -60,12 +60,5 @@
     "C:\\Users\\admin\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file c:\\Users\\admin\\Music\\LearningChineseVideo\\Services\\LearningVideoApi\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }

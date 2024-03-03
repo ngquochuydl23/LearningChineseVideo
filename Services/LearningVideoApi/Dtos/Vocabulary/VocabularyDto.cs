@@ -15,5 +15,7 @@
         public string? OppositeMeaning { get; set; }
 
         public string? Example { get; set; }
+
+        public string? SinoVietnamese { get; set; }
     }
 }

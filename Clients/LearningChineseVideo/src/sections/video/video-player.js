@@ -105,7 +105,7 @@ const VideoPlayer = ({
     });
 
     const [playing, setPlaying] = useState(true);
-    console.log(subtitles);
+    
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
         if (!videoElement)
@@ -135,7 +135,7 @@ const VideoPlayer = ({
     useEffect(() => {
         Promise.all(_.map(subtitles, subtitle => axios.get(readMediaUrl(subtitle.url))))
             .then(async ([seg, chinese, pinyin, vietnamese]) => {
-                
+
                 const chineseCues = webvtt.parse(chinese.data, { strict: false }).cues;
                 const pinyinCues = webvtt.parse(pinyin.data, { strict: false }).cues;
                 const vietnameseCues = webvtt.parse(vietnamese.data, { strict: false }).cues;
@@ -173,6 +173,7 @@ const VideoPlayer = ({
                         justifyContent: 'center',
                         backgroundColor: 'black'
                     }}
+                    onPlay={() => setPlaying(true)}
                     playing={playing}
                     onProgress={onProgress}
                     controls={true}
@@ -202,7 +203,9 @@ const VideoPlayer = ({
 
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
-                        <Word word={word} />
+                        <Word
+                            onClick={() => setPlaying(false)}
+                            word={word} />
                     ))}
                 </Stack>
             </Box>

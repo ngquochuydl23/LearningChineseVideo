@@ -14,8 +14,6 @@ import { getVideo, viewVideo } from 'src/services/api/video-api';
 
 const ProductDetailPage = () => {
 
-    const [openEditGeneralDrawer, setOpenEditGeneralDrawer] = useState(false);
-    const [openAlert, setOpenAlert] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const idPopover = open ? 'simple-popover' : undefined;
@@ -41,13 +39,10 @@ const ProductDetailPage = () => {
         return null;
     }
 
-
     return (
         <>
             <Head>
-                <title>
-                    {video.title}
-                </title>
+                <title> {video.title}</title>
             </Head>
             <Box>
                 <VideoPlayer

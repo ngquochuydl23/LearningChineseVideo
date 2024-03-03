@@ -5,24 +5,55 @@ import {
     Stack,
     Typography,
     Unstable_Grid2 as Grid,
-    Button,
     CircularProgress
 } from '@mui/material';
 import { Layout as AdminLayout } from 'src/layouts/admin-layout/layout';
 import GridVideoAdminCard from 'src/components/grid-video-admin-card';
 import { useEffect, useState } from 'react';
-import { getVideos } from 'src/services/api/video-api';
+import { delVideo, getVideos } from 'src/services/api/video-api';
+import { useSnackbar } from 'notistack';
+
 
 const Page = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
+    const fetchVideo = () => {
         setLoading(true);
         getVideos()
             .then((res) => { setVideos(res) })
             .catch((err) => console.log())
             .finally(() => setLoading(false))
+    }
+
+    const deleteVideo = (id) => {
+        delVideo(id)
+            .then(() => {
+                console.log(`Video ${id} is successfully deleted.`);
+                fetchVideo();
+                enqueueSnackbar(`Đã xóa thành công video ${id}`, {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                enqueueSnackbar(`Xóa video thất bại`, {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }
+                });
+            })
+    }
+
+    useEffect(() => {
+        fetchVideo();
     }, [])
 
     return (
@@ -45,7 +76,10 @@ const Page = () => {
                                 <CircularProgress />
                             </Box>
                             : _.map(videos, (video) => (
-                                <GridVideoAdminCard {...video} />
+                                <GridVideoAdminCard
+                                    {...video}
+                                    onDeleteItem={deleteVideo}
+                                />
                             ))
                         }
                     </Stack>

@@ -1,10 +1,11 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, CardMedia, Chip, Stack } from '@mui/material';
+import { Box, CardActionArea, CardMedia, Chip, MenuItem, Popover, Stack } from '@mui/material';
 import readMediaUrl from 'src/utils/read-media-url';
 import Link from 'next/link';
-
+import { useState } from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const GridVideoAdminCard = ({
     id,
@@ -12,12 +13,26 @@ const GridVideoAdminCard = ({
     title,
     level,
     topics,
-    duration
+    duration,
+    onDeleteItem
 }) => {
+
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const idPopover = open ? 'simple-popover' : undefined;
+
     return (
         <Stack
-            component={Link}
-            href={"/admin/videos/" + id}
             direction="row"
             sx={{ width: '100%', textDecoration: 'none' }}>
             <div style={{
@@ -54,15 +69,21 @@ const GridVideoAdminCard = ({
                         label={"HSK " + level} />
                 </div>
             </div>
-            <Box sx={{ padding: '10px', ml: '10px' }}>
-                <Typography
-                    fontSize="20px"
-                    gutterBottom
-                    variant="h5"
-                    sx={{ color: 'black' }}
-                    component="div">
-                    {title}
-                </Typography>
+            <Box sx={{ padding: '10px', ml: '10px', width: "100%" }}>
+                <Stack
+                    justifyContent="space-between"
+                    direction="row"
+                    sx={{ width: "100%" }}>
+                    <Typography
+                        fontSize="20px"
+                        gutterBottom
+                        variant="h5"
+                        sx={{ color: 'black' }}
+                        component="div">
+                        {title}
+                    </Typography>
+                    <MoreVertIcon onClick={handleClick} />
+                </Stack>
                 <Typography
                     fontSize='14px'
                     variant="subtitle2"
@@ -76,6 +97,20 @@ const GridVideoAdminCard = ({
                     Chủ đề: {topics.join(', ')}
                 </Typography>
             </Box>
+            <Popover
+                id={idPopover}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}>
+                <MenuItem
+                    onClick={() => onDeleteItem(id)}>
+                    Xóa video
+                </MenuItem>
+            </Popover>
         </Stack>
     )
 }

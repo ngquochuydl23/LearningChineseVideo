@@ -105,7 +105,6 @@ const VideoPlayer = ({
     });
 
     const [playing, setPlaying] = useState(true);
-    
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
         if (!videoElement)

@@ -10,5 +10,6 @@ export const getRecentlyAddedVideo = (offset, limit) => http.get('Video/recently
 
 export const getVideo = (id) => http.get('/Video/' + id);
 
+export const viewVideo = (id) => http.post('/Video/' + id + '/View');
 
-export const viewVideo = (id) => http.post(id + '/View');
+export const delVideo = (id) => http.delete('/Video/' + id); 

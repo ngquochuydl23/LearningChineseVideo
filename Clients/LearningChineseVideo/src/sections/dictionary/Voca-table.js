@@ -17,10 +17,10 @@ import moment from 'moment/moment';
 import Link from 'next/link';
 import CustomAvatar from 'src/components/custom-avt';
 
-export const MemberTable = (props) => {
+export const VocaTable = (props) => {
   const {
     count = 0,
-    members = [],
+    vocas = [],
     onDeselectAll,
     onDeselectOne,
     onPageChange = () => { },
@@ -29,7 +29,8 @@ export const MemberTable = (props) => {
     onSelectOne,
     page = 0,
     rowsPerPage = 0,
-    selected = []
+    selected = [],
+    onChoose,
   } = props;
 
   return (
@@ -43,61 +44,69 @@ export const MemberTable = (props) => {
                   #
                 </TableCell>
                 <TableCell>
-                  Họ và tên
+                  Từ
                 </TableCell>
                 <TableCell>
-                  Số điện thoại
+                  Nghĩa
                 </TableCell>
                 <TableCell>
-                  Email
+                  Hán việt
                 </TableCell>
                 <TableCell>
-                  Ngày tham gia
+                  Từ tính
+                </TableCell>
+                <TableCell>
+                  Pinyin
+                </TableCell>
+                <TableCell>
+                  Từ gần nghĩa
+                </TableCell>
+                <TableCell>
+                  Từ trái nghĩa
+                </TableCell>
+                <TableCell>
+                  Câu ví dụ
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {members.map((item, index) => {
+              {vocas.map((item, index) => {
                 const isSelected = selected.includes(item.id);
                 return (
                   <TableRow
                     hover
-                    component={Link}
+                    // component={Link}
                     sx={{ textDecoration: 'none' }}
-                    href={"/customers/" + item.id}
+                    // href={"/customers/" + item.id}
                     key={item.id}
+                    onClick={() => onChoose(item)}
                     selected={isSelected}>
                     <TableCell padding="checkbox">
                       {index + 1}
                     </TableCell>
                     <TableCell>
-                      <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}>
-                        <CustomAvatar
-                          src={item.avatar}
-                          fullname={item.fullName}
-                          sx={{
-                            borderRadius: '100px',
-                            height: '45px',
-                            width: '45px'
-                          }} />
-                        <Typography
-                          sx={{ fontWeight: '600' }}
-                          variant="subtitle2">
-                          {item.fullName}
-                        </Typography>
-                      </Stack>
+                      {item.originWord}
                     </TableCell>
                     <TableCell>
-                      {item.phoneNumber}
+                      {item.vietnameseMean}
                     </TableCell>
                     <TableCell>
-                      {item.email}
+                      
                     </TableCell>
                     <TableCell>
-                      {moment(item.createdAt).format("MMM Do YY")}
+                      {item.wordType}
+                    </TableCell>
+                    <TableCell>
+                      {item.pinyin}
+                    </TableCell>
+                    <TableCell>
+                      {item.similiarMeaning}
+                    </TableCell>
+                    <TableCell>
+                      {item.oppositeMeaning}
+                    </TableCell>
+                    <TableCell>
+                      {item.example}
                     </TableCell>
                   </TableRow>
                 );
@@ -110,9 +119,9 @@ export const MemberTable = (props) => {
   );
 };
 
-MemberTable.propTypes = {
+VocaTable.propTypes = {
   count: PropTypes.number,
-  members: PropTypes.array,
+  vocas: PropTypes.array,
   onDeselectAll: PropTypes.func,
   onDeselectOne: PropTypes.func,
   onPageChange: PropTypes.func,
@@ -121,5 +130,6 @@ MemberTable.propTypes = {
   onSelectOne: PropTypes.func,
   page: PropTypes.number,
   rowsPerPage: PropTypes.number,
-  selected: PropTypes.array
+  selected: PropTypes.array,
+  onChoose: PropTypes.func
 };

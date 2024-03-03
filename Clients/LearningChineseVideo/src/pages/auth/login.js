@@ -1,42 +1,39 @@
-import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-    Alert,
     Box,
     Button,
-    FormHelperText,
     Link,
     Stack,
-    Tab,
-    Tabs,
     TextField,
     Typography
 } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
+import AlertDialog from 'src/components/alert-dialog';
+import { useState } from 'react';
 
 const Page = () => {
     const router = useRouter();
     const auth = useAuth();
+    const [error, setError] = useState(undefined);
     const formik = useFormik({
         initialValues: {
             phoneNumber: '',
             password: '',
-
         },
         validationSchema: Yup.object({
             phoneNumber: Yup
                 .string()
                 .max(11)
-                .required('Phone number is required'),
+                .required('Vui lòng nhập số điện thoại'),
             password: Yup
                 .string()
                 .max(255)
-                .required('Password is required')
+                .required('Vui lòng nhập mật khẩu')
         }),
         onSubmit: async (values, helpers) => {
             try {
@@ -46,6 +43,25 @@ const Page = () => {
                 helpers.setStatus({ success: false });
                 helpers.setErrors({ submit: err.message });
                 helpers.setSubmitting(false);
+
+                if (err === 'User does not exist') {
+                    setError({
+                        title: 'Đăng ký không thành công!',
+                        content: 'Tài khoản không tồn tại.'
+                    })
+                }
+                else if (err === 'Password is incorrect') {
+                    setError({
+                        title: 'Đăng ký không thành công!',
+                        content: 'Sai mật khẩu'
+                    })
+                }
+                else {
+                    setError({
+                        title: 'Đăng ký không thành công!',
+                        content: err
+                    })
+                }
             }
         }
     });
@@ -54,7 +70,7 @@ const Page = () => {
         <>
             <Head>
                 <title>
-                    Login
+                    Đăng nhập
                 </title>
             </Head>
             <Box
@@ -64,42 +80,35 @@ const Page = () => {
                     alignItems: 'center',
                     display: 'flex',
                     justifyContent: 'center'
-                }}
-            >
+                }}>
                 <Box
                     sx={{
                         maxWidth: 550,
                         px: 3,
                         py: '100px',
                         width: '100%'
-                    }}
-                >
+                    }}>
                     <div>
                         <Stack
                             spacing={1}
-                            sx={{ mb: 3 }}
-                        >
+                            sx={{ mb: 3 }}>
                             <Typography variant="h4">
-                                Login
+                                Đăng nhập
                             </Typography>
                             <Typography
                                 color="text.secondary"
-                                variant="body2"
-                            >
-                                Don&apos;t have an account?
+                                variant="body2">
+                                Bạn chưa có tài khoản?
                                 &nbsp;
                                 <Link
                                     component={NextLink}
-                                    href="/auth/register"
+                                    href="/register"
                                     underline="hover"
-                                    variant="subtitle2"
-                                >
-                                    Register
+                                    variant="subtitle2">
+                                    Đăng ký
                                 </Link>
                             </Typography>
                         </Stack>
-
-
                         <form
                             noValidate
                             onSubmit={formik.handleSubmit} >
@@ -108,7 +117,7 @@ const Page = () => {
                                     error={!!(formik.touched.phoneNumber && formik.errors.phoneNumber)}
                                     fullWidth
                                     helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-                                    label="Phone number"
+                                    label="Số điện thoại"
                                     id="phoneNumber"
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -118,7 +127,7 @@ const Page = () => {
                                     error={!!(formik.touched.password && formik.errors.password)}
                                     fullWidth
                                     helperText={formik.touched.password && formik.errors.password}
-                                    label="Password"
+                                    label="Mật khẩu"
                                     name="password"
                                     onBlur={formik.handleBlur}
                                     onChange={formik.handleChange}
@@ -140,18 +149,21 @@ const Page = () => {
                                 size="large"
                                 sx={{ mt: 3, borderRadius: '10px' }}
                                 type="submit"
-                                variant="contained"
-                            >
-                                Continue
+                                variant="contained">
+                                Đăng nhập
                             </Button>
-
-
                         </form>
-
-
                     </div>
                 </Box>
             </Box>
+            <AlertDialog
+                title={error ? error.title : undefined}
+                content={error ? error.content : undefined}
+                open={Boolean(error)}
+                rightTxt="OK"
+                handleClose={() => setError(null)}
+                onRightClick={() => setError(null)}
+            />
         </>
     );
 };

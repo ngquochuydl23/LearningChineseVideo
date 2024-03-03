@@ -63,7 +63,7 @@ const VideoInfo = ({
                             backgroundColor: '#b100cd',
                             fontSize: '14px',
                             color: 'white'
-                        }}
+                        }} 
                         label={tag} />
                 ))}
             </Stack>
@@ -73,15 +73,7 @@ const VideoInfo = ({
                 variant='subtitle2'>
                 {description}
             </Typography>
-            <Typography
-                my="20px"
-                fontSize="30px"
-                fontWeight="800"
-                variant="h5">
-                Bình luận (20)
-            </Typography>
-            <CommentItem
-            />
+        
         </Box>
     )
 }

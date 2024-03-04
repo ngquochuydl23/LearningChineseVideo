@@ -33,6 +33,7 @@ namespace LearningVideoApi.Controllers
             var vocas = _vocaRepo
                 .GetQueryableNoTracking()
                 .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 
             return Ok(_mapper.Map<ICollection<VocabularyDto>>(vocas));

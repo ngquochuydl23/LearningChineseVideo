@@ -122,9 +122,9 @@ namespace LearningVideoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public void EditVideoInfo(string id, [FromBody] string value)
+        public IActionResult EditVideoInfo(string id, [FromBody] string value)
         {
-
+            return Ok();
         }
 
         [Authorize]

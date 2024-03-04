@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LearningVideoApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+05f07a32d92074adfebe505d62eed60ba03ee7ed")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b53662bd6d4aaeb53c1e1c87f08b9effda171e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("LearningVideoApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LearningVideoApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

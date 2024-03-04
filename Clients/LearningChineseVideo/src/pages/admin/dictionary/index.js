@@ -10,8 +10,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { Layout as AdminLayout } from 'src/layouts/admin-layout/layout';
-import { getVideo } from 'src/services/api/video-api';
-import { useRouter } from 'next/router';
 import { VocaTable } from 'src/sections/dictionary/Voca-table';
 import { getVocas } from 'src/services/api/voca-api';
 import AddUpdateVocaDialog from 'src/sections/dictionary/add-update-voca-dialog';

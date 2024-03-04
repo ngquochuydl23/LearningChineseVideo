@@ -7,7 +7,6 @@ import readMediaUrl from "src/utils/read-media-url";
 import Divider from '@mui/material/Divider';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import _ from "lodash";
-import { timeVttToMilisecond } from "src/utils/time-util";
 import axios from "axios";
 import webvtt from 'node-webvtt';
 import Word from "./word";
@@ -64,7 +63,7 @@ const TranscriptItem = ({
                         ml="2px"
                         fontSize="14px"
                         variant="subtitle2">
-                        {startTime}
+                        {_.round(startTime, 2)}
                     </Typography>
                 </Stack>
                 <Box width="100%" mb="20px">
@@ -98,6 +97,7 @@ const VideoPlayer = ({
     const [currentTextSub, setCurrentTextSub] = useState();
     const [playedSeconds, setPlayedSeconds] = useState(0);
     const [transcripts, setTranscripts] = useState({
+        seg: [],
         chinese: [],
         pinyin: [],
         vietnamese: [],
@@ -105,17 +105,21 @@ const VideoPlayer = ({
     });
 
     const [playing, setPlaying] = useState(true);
-
     const onProgress = (state) => {
         const videoElement = document.querySelector("video");
+
         if (!videoElement)
             return;
 
         const currentTime = state.playedSeconds;
         setPlayedSeconds(currentTime);
 
-        const cues = videoElement.textTracks[0].cues;
-        const currentCue = _.find(cues, x => currentTime >= x.startTime && currentTime <= x.endTime)
+        // const cues = videoElement.textTracks[0].cues;
+        const cues = transcripts.seg;
+
+        console.log(transcripts);
+
+        const currentCue = _.find(cues, x => (currentTime >= x.start && currentTime <= x.end))
 
         if (currentCue) {
             setCurrentTextSub(currentCue.text)
@@ -132,15 +136,30 @@ const VideoPlayer = ({
         console.log(scrollPanel);
     }
 
+
+    const getTracks = (subtitles) => {
+
+        const filterSubs = _.filter(subtitles, x => !x.isDefault);
+        console.log(filterSubs);
+
+        return _.map(filterSubs, subtitle => ({
+            ...subtitle,
+            src: readMediaUrl(subtitle.url),
+            default: subtitle.srcLang === 'zh'
+        }))
+    }
+
     useEffect(() => {
         Promise.all(_.map(subtitles, subtitle => axios.get(readMediaUrl(subtitle.url))))
             .then(async ([seg, chinese, pinyin, vietnamese]) => {
-                
-                const chineseCues = webvtt.parse(chinese.data, { strict: false }).cues;
-                const pinyinCues = webvtt.parse(pinyin.data, { strict: false }).cues;
-                const vietnameseCues = webvtt.parse(vietnamese.data, { strict: false }).cues;
+
+                const segCues = webvtt.parse(seg.data, { strict: true }).cues;
+                const chineseCues = webvtt.parse(chinese.data, { strict: true }).cues;
+                const pinyinCues = webvtt.parse(pinyin.data, { strict: true }).cues;
+                const vietnameseCues = webvtt.parse(vietnamese.data, { strict: true }).cues;
 
                 setTranscripts({
+                    seg: segCues,
                     chinese: chineseCues,
                     pinyin: pinyinCues,
                     vietnamese: vietnameseCues,
@@ -151,7 +170,7 @@ const VideoPlayer = ({
             });
     }, [])
 
-
+    console.log(transcripts);
     return (
         <Stack
             display="flex"
@@ -173,6 +192,7 @@ const VideoPlayer = ({
                         justifyContent: 'center',
                         backgroundColor: 'black'
                     }}
+                    onPlay={() => setPlaying(true)}
                     playing={playing}
                     onProgress={onProgress}
                     controls={true}
@@ -181,11 +201,7 @@ const VideoPlayer = ({
                             attributes: {
                                 crossOrigin: "true",
                             },
-                            tracks: _.map(subtitles, subtitle => ({
-                                ...subtitle,
-                                src: readMediaUrl(subtitle.url),
-                                default: subtitle.isDefault
-                            })),
+                            tracks: getTracks(subtitles),
                         },
                     }}
                     light={thumbnail}
@@ -199,10 +215,11 @@ const VideoPlayer = ({
                     sx={{
                         minHeight: '20vh',
                         display: 'flex',
-
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
-                        <Word word={word} />
+                        <Word
+                            onClick={() => setPlaying(false)}
+                            word={word} />
                     ))}
                 </Stack>
             </Box>
@@ -228,7 +245,6 @@ const VideoPlayer = ({
                         spacing="10px"
                         direction="column">
                         {_.map(transcripts.chinese, (item, idx) => {
-
                             return (
                                 <TranscriptItem
                                     selected={playedSeconds >= item.start && playedSeconds <= item.end}

@@ -9,12 +9,5 @@ export const items = [
     icon: (
       <HomeIcon />
     )
-  },
-  {
-    title: 'Tìm kiếm',
-    path: '/search',
-    icon: (
-      <SearchIcon />
-    )
   }
 ];

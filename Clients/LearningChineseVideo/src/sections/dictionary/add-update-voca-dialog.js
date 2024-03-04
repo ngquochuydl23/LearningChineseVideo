@@ -18,10 +18,26 @@ export default function AddUpdateVocaDialog({
     const [showAlert, setShowAlert] = useState(false);
 
     const router = useRouter();
+
+
+    const resetForm = () => {
+        formik.setValues({
+            originWord: '',
+            vietnameseMean: '',
+            sinoVietnamese: '',
+            wordType: '',
+            pinyin: '',
+            similiarMeaning: '',
+            oppositeMeaning: '',
+            example: ''
+        })
+    }
+
     const formik = useFormik({
         initialValues: {
             originWord: '',
             vietnameseMean: '',
+            sinoVietnamese: '',
             wordType: '',
             pinyin: '',
             similiarMeaning: '',
@@ -34,41 +50,26 @@ export default function AddUpdateVocaDialog({
                 addVoca(values)
                     .then((res) => {
                         onAdded();
-                        formik.setValues({
-                            originWord: '',
-                            vietnameseMean: '',
-                            wordType: '',
-                            pinyin: '',
-                            similiarMeaning: '',
-                            oppositeMeaning: '',
-                            example: ''
-                        })
-                        handleClose()
+                        handleClose();
                     })
                     .catch(err => {
                         if (err === 'Vocabulary is already exist') {
                             setShowAlert(true);
                         }
                     })
+                    .finally(() => resetForm())
             } else {
                 editVocabulary(editedVoca.originWord, values)
                     .then((res) => {
                         console.log(res);
                         onAdded();
-                        formik.setValues({
-                            originWord: '',
-                            vietnameseMean: '',
-                            wordType: '',
-                            pinyin: '',
-                            similiarMeaning: '',
-                            oppositeMeaning: '',
-                            example: ''
-                        })
+                        resetForm();
                         handleClose();
                     })
                     .catch(err => {
                         console.log(err);
                     })
+                    .finally(() => resetForm())
             }
         }
     });
@@ -76,7 +77,7 @@ export default function AddUpdateVocaDialog({
     useEffect(() => {
         if (editedVoca) {
             formik.setValues(editedVoca);
-        }
+        } else resetForm()
     }, [editedVoca])
 
 
@@ -107,10 +108,22 @@ export default function AddUpdateVocaDialog({
                             fullWidth
                             helperText={formik.touched.vietnameseMean && formik.errors.vietnameseMean}
                             label="Nghĩa"
+                            multiline
+                            minRows={5}
                             id="vietnameseMean"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                             value={formik.values.vietnameseMean}
+                        />
+                        <TextField
+                            error={!!(formik.touched.sinoVietnamese && formik.errors.sinoVietnamese)}
+                            fullWidth
+                            helperText={formik.touched.sinoVietnamese && formik.errors.sinoVietnamese}
+                            label="Hán việt"
+                            id="sinoVietnamese"
+                            onBlur={formik.handleBlur}
+                            onChange={formik.handleChange}
+                            value={formik.values.sinoVietnamese}
                         />
                         <TextField
                             error={!!(formik.touched.wordType && formik.errors.wordType)}

@@ -3,6 +3,7 @@ using System;
 using LearningVideoApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -12,9 +13,11 @@ using NpgsqlTypes;
 namespace LearningVideoApi.Migrations
 {
     [DbContext(typeof(LearningVideoDbContext))]
-    partial class LearningVideoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240303083050_SinoVietnamese")]
+    partial class SinoVietnamese
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,8 +200,9 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("Level")
-                        .HasColumnType("integer");
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()

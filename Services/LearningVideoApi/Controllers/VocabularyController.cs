@@ -32,6 +32,7 @@ namespace LearningVideoApi.Controllers
         {
             var vocas = _vocaRepo
                 .GetQueryableNoTracking()
+                .OrderBy(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToList();
@@ -71,7 +72,8 @@ namespace LearningVideoApi.Controllers
                 Pinyin = value.Pinyin,
                 SimiliarMeaning = value.SimiliarMeaning,
                 OppositeMeaning = value.OppositeMeaning,
-                Example = value.Example
+                Example = value.Example,
+                SinoVietnamese = value.SinoVietnamese,
             });
 
             return Ok(_mapper.Map<VocabularyDto>(vocabulary));
@@ -92,7 +94,7 @@ namespace LearningVideoApi.Controllers
             voca.Pinyin = value.Pinyin;
             voca.Example = value.Example;
             voca.LastUpdated = DateTime.UtcNow;
-
+            voca.SinoVietnamese = value.SinoVietnamese;
 
             _vocaRepo.SaveChanges();
             return Ok(_mapper.Map<VocabularyDto>(voca));

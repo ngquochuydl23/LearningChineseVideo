@@ -6,6 +6,8 @@
 
         public string? VietnameseMean { get; set; }
 
+        public string? SinoVietnamese { get; set; }
+
         public string? WordType { get; set; }
 
         public string? Pinyin { get; set; }

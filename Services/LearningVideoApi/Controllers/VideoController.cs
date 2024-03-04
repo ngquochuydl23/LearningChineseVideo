@@ -67,12 +67,15 @@ namespace LearningVideoApi.Controllers
         [HttpGet("{id}")]
         public IActionResult GetVideo(string id)
         {
+            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(id);
+            string chineseId = System.Text.Encoding.UTF8.GetString(buffer);
+
             var video = _videoRepo
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Include(x => x.Subtitles)
-                .FirstOrDefault(x => x.Id.Equals(id) && !x.IsDeleted)
+                .FirstOrDefault(x => x.Id.Equals(chineseId) && !x.IsDeleted)
                     ?? throw new AppException("Video does not exist");
 
             return Ok(_mapper.Map<VideoDto>(video));

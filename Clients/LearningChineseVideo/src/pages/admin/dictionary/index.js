@@ -5,7 +5,6 @@ import {
     Stack,
     Typography,
     Unstable_Grid2 as Grid,
-    Avatar,
     Button
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -13,13 +12,15 @@ import { Layout as AdminLayout } from 'src/layouts/admin-layout/layout';
 import { VocaTable } from 'src/sections/dictionary/Voca-table';
 import { getVocas } from 'src/services/api/voca-api';
 import AddUpdateVocaDialog from 'src/sections/dictionary/add-update-voca-dialog';
+import ReactSearchBox from 'react-search-box';
+import _ from 'lodash';
 
 const Page = () => {
     const [vocas, setVocas] = useState([]);
     const [dialogState, setDialogState] = useState({
         open: false,
         voca: undefined
-    })
+    });
 
     const fetchVoca = () => {
         getVocas()
@@ -48,11 +49,27 @@ const Page = () => {
                     alignItems="center"
                     justifyContent="space-between"
                     direction="row">
-                    <Typography
-                        mb="30px"
-                        variant="h4">
-                        Đăng tải video
-                    </Typography>
+                    <Stack>
+                        <Typography
+                            mb="30px"
+                            variant="h4">
+                            Từ điển
+                        </Typography>
+                        <ReactSearchBox
+                            placeholder="Tìm tự vựng"
+                            data={_.map(vocas, (item) => ({
+                                key: item,
+                                value: item.originWord,
+                            }))}
+                            clearOnSelect
+                            onSelect={(record) => {
+                                setDialogState({
+                                    open: true,
+                                    voca: record.item.key
+                                })
+                            }}
+                        />
+                    </Stack>
                     <Button
                         onClick={() => setDialogState({
                             open: true,
@@ -73,9 +90,7 @@ const Page = () => {
             </Box>
             <AddUpdateVocaDialog
                 editedVoca={dialogState.voca}
-                onAdded={() => {
-                    fetchVoca();
-                }}
+                onAdded={fetchVoca}
                 open={dialogState.open}
                 handleClose={() => setDialogState({
                     open: false,

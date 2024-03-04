@@ -20,7 +20,7 @@ const Page = () => {
     const [dialogState, setDialogState] = useState({
         open: false,
         voca: undefined
-    })
+    });
 
     const fetchVoca = () => {
         getVocas()

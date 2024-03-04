@@ -32,7 +32,8 @@ const Word = ({
     }
 
     useEffect(() => {
-        getVocabulary(encodeURIComponent(word))
+        console.log(word);
+        getVocabulary(word)
             .then((res) => {
                 console.log(res);
                 setVocabulary(res);

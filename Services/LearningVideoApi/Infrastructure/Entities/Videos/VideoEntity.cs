@@ -53,7 +53,7 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
             long duration,
             string level)
         {
-            Id = GenerateStringId(title);
+            Id = Guid.NewGuid().ToString();
             Title = title;
             Description = description;
             VideoUrl = videoUrl;

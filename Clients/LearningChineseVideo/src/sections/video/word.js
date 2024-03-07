@@ -27,7 +27,7 @@ const Word = ({
     const separateExampleAsLine = (example) => {
         var chinese = _.map(example.split('。'))[0];
         var rest = _.map(example.split('。'))[1];
-        var examples =  [chinese]
+        var examples = [chinese]
         if (rest) {
             examples = [chinese, ..._.map(rest.split('. '))];
         }
@@ -35,23 +35,30 @@ const Word = ({
         return examples;
     }
 
-    useEffect(() => {
-        console.log(word);
+
+    const fetchWord = (word) => {
         getVocabulary(word)
             .then((res) => {
+                console.log("Result of : " + word);
                 console.log(res);
                 setVocabulary(res);
             })
             .catch(err => {
+                setVocabulary(null);
                 console.log(err);
                 setError(err);
             });
-    }, [])
+    }
+
 
     return (
         <PopupState variant="popover" popupId="demo-popup-popover">
             {(popupState) => (
-                <div onClick={onClick}>
+                <div onClick={() => {
+                    console.log(word);
+                    fetchWord(word);
+                    onClick();
+                }}>
                     <Typography
                         {...bindTrigger(popupState)}
                         sx={{
@@ -89,7 +96,7 @@ const Word = ({
                             <Typography
                                 fontWeight="600"
                                 fontSize="20px">{word}</Typography>
-                            {(vocabulary && !error) &&
+                            {(vocabulary) &&
                                 <div>
                                     <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}</p>
                                     <p style={{ fontSize: '14px' }}>Từ loại: {vocabulary.wordType}</p>
@@ -104,7 +111,7 @@ const Word = ({
                                     </div>
 
                                 </div>
-                            } 
+                            }
                             {error &&
                                 <div>Không tìm thấy tự vựng</div>
                             }

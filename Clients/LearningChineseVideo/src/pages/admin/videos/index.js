@@ -69,7 +69,7 @@ const Page = () => {
                 <Container maxWidth="lg">
                     <Stack spacing={3} paddingBottom="30px">
                         <Typography variant="h4">
-                            Danh sách video (38)
+                            Danh sách video ({videos.length})
                         </Typography>
                         {loading ?
                             <Box sx={{ display: 'flex' }}>

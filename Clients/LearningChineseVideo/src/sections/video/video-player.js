@@ -209,6 +209,7 @@ const VideoPlayer = ({
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
                         <Word
+                            onClose={() => setPlaying(true)}
                             onClick={() => setPlaying(false)}
                             word={word} />
                     ))}

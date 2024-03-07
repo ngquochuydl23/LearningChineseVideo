@@ -21,9 +21,8 @@ async function onFulfilledReq(config) {
     const accessToken = getAccessToken();
 
     config.headers['Authorization'] = `Bearer ${accessToken}`
-    config.headers['Content-Type'] = `application/json-patch+json`
+    config.headers['Content-Type'] = `application/json-patch+json;charset=utf-8`
     config.headers['accept'] = `*/*`
-
     return config;
 }
 

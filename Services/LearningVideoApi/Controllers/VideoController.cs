@@ -88,9 +88,8 @@ namespace LearningVideoApi.Controllers
             if (_videoRepo
                 .GetQueryableNoTracking()
                 .FirstOrDefault(x => x.Title.Equals(value.Title) && !x.IsDeleted) != null)
-            {
                 throw new AppException("Video is already created");
-            }
+            
 
             using (_unitOfWork.Begin())
             {

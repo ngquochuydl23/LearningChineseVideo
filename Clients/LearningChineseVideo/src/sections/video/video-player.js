@@ -114,11 +114,7 @@ const VideoPlayer = ({
         const currentTime = state.playedSeconds;
         setPlayedSeconds(currentTime);
 
-        // const cues = videoElement.textTracks[0].cues;
         const cues = transcripts.seg;
-
-        console.log(transcripts);
-
         const currentCue = _.find(cues, x => (currentTime >= x.start && currentTime <= x.end))
 
         if (currentCue) {
@@ -133,15 +129,11 @@ const VideoPlayer = ({
 
         var scrollPanel = document.getElementById('ScrollPanel');
         var topPos = scrollPanel.offsetTop;
-        console.log(scrollPanel);
     }
 
 
     const getTracks = (subtitles) => {
-
         const filterSubs = _.filter(subtitles, x => !x.isDefault);
-        console.log(filterSubs);
-
         return _.map(filterSubs, subtitle => ({
             ...subtitle,
             src: readMediaUrl(subtitle.url),
@@ -170,7 +162,6 @@ const VideoPlayer = ({
             });
     }, [])
 
-    console.log(transcripts);
     return (
         <Stack
             display="flex"

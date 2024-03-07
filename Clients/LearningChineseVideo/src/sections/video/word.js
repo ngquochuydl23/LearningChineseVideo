@@ -27,7 +27,11 @@ const Word = ({
     const separateExampleAsLine = (example) => {
         var chinese = _.map(example.split('。'))[0];
         var rest = _.map(example.split('。'))[1];
-        var examples = [chinese, ..._.map(rest.split('. '))];
+        var examples =  [chinese]
+        if (rest) {
+            examples = [chinese, ..._.map(rest.split('. '))];
+        }
+
         return examples;
     }
 
@@ -92,7 +96,7 @@ const Word = ({
                                     <p style={{ fontSize: '14px' }}>Nghĩa: {vocabulary.vietnameseMean}</p>
                                     <p style={{ fontSize: '14px' }}>Ví dụ:</p>
                                     <div style={{ marginLeft: '20px' }}>
-                                        {vocabulary.example &&
+                                        {Boolean(vocabulary.example) &&
                                             _.map(separateExampleAsLine(vocabulary.example), (item => (
                                                 <p style={{ fontSize: '14px' }}>{item}</p>
                                             )))

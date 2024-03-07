@@ -22,8 +22,10 @@ import UploadVttList from 'src/sections/video/upload-vtt-list';
 import { MuiChipsInput } from 'mui-chips-input';
 import { useRouter } from 'next/router';
 import { addVideo } from 'src/services/api/video-api';
+import { useSnackbar } from 'notistack';
 
 const Page = () => {
+    const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
     const formik = useFormik({
         initialValues: {
@@ -64,20 +66,48 @@ const Page = () => {
         }),
 
         onSubmit: async (values, helpers) => {
-            console.log(values);
             try {
 
 
                 await addVideo(values);
                 router.push('/admin/videos');
+
+                console.log(values);
+                enqueueSnackbar(`Tạo video thành công`, {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }
+                });
+
             } catch (err) {
                 helpers.setStatus({ success: false });
                 helpers.setErrors({ submit: err.message });
                 helpers.setSubmitting(false);
+
+                console.log(err);
+                if (err === 'Video is already created') {
+                    enqueueSnackbar(`Tiêu đề video đã bị trùng, vui lòng nhập tiêu đề khác`, {
+                        variant: 'error',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
+                } else {
+                    enqueueSnackbar(err, {
+                        variant: 'error',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
+                }
             }
         }
     });
-    
+
     return (
         <>
             <Head>

@@ -34,6 +34,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .OrderBy(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
+                .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 
             return Ok(_mapper.Map<ICollection<VocabularyDto>>(vocas));

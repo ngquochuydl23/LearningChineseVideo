@@ -21,6 +21,6 @@ namespace LearningVideoApi.Dtos
         public int Gender { get; set; }
 
         [Required]
-        public string Level { get; set; }
+        public int Level { get; set; } = 1;
     }
 }

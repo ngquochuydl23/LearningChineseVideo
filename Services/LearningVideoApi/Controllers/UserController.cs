@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using FluentValidation.Results;
 using LearningVideoApi.Dtos;
 using LearningVideoApi.Dtos.User;
 using LearningVideoApi.Extensions.JwtHelpers;

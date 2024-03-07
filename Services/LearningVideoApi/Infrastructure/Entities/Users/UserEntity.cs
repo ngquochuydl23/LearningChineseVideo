@@ -25,7 +25,7 @@ namespace LearningVideoApi.Infrastructure.Entities.Users
 
         public string? Avatar { get; set; }
 
-        public string Level { get; set; }
+        public int Level { get; set; } = 1;
 
         public string Role { get; set; } = "User";
 

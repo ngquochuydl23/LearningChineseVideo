@@ -14,6 +14,6 @@
 
         public string? Avatar { get; set; }
 
-        public string? Level { get; set; }
+        public int Level { get; set; }
     }
 }

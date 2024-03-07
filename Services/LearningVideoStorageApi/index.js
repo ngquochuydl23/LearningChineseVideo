@@ -1,47 +1,103 @@
 const express = require("express");
 const fs = require("fs");
 const app = express();
+const bodyParser = require('body-parser')
+const multer = require('multer');
+const cors = require('cors');
+const crypto = require('crypto');
+const path = require('path');
 
-app.get("/video", function (req, res) {
-    // Ensure there is a range given for the video
-    const range = req.headers.range;
-    if (!range) {
-        res.status(400).send("Requires Range header");
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ origin: '*' }));
+
+var storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const path = `./uploads`
+        fs.mkdirSync(path, { recursive: true });
+        return cb(null, path)
+    },
+    filename: function (req, file, cb) {
+        crypto.randomBytes(16, (err, buf) => {
+            if (err) return cb(err)
+
+            const filename = buf.toString('hex') + path.extname(file.originalname);
+            return cb(null, filename)
+        })
+    }
+})
+
+var upload = multer({
+    storage: storage,
+    limits: 10 * 1024 * 1024
+})
+
+app.post('/storage-api/upload', upload.any(), (req, res, next) => {
+    const files = req.files;
+    console.log(files);
+    if (!files) {
+        const error = new Error('Please upload a file')
+        error.httpStatusCode = 400
+        return next(error)
     }
 
-    // get video stats (about 61MB)
-    const videoPath = "bigbuck.mp4";
-    const videoSize = fs.statSync("bigbuck.mp4").size;
+    var result = files.map((file) => ({
+        size: file.size,
+        url: "/storage/" + file.mimetype.split("/")[0] + "/" + file.filename,
+        mimetype: file.mimetype,
+        filename: file.originalname
+    }))
 
-    // Parse Range
-    // Example: "bytes=32324-"
-    const CHUNK_SIZE = 10 ** 6; // 1MB
-    const start = Number(range.replace(/\D/g, ""));
-    const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+    return res.status(200).send({
+        statusCode: 200,
+        result: {
+            medias: result
+        }
+    });
+})
 
-    // Create headers
-    const contentLength = end - start + 1;
-    const headers = {
-        "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-        "Accept-Ranges": "bytes",
-        "Content-Length": contentLength,
-        "Content-Type": "video/mp4",
-    };
 
-    // HTTP Status 206 for Partial Content
-    res.writeHead(206, headers);
+app.get("/storage/:filetype/:filename", function (req, res) {
 
-    // create video read stream for this particular chunk
-    const videoStream = fs.createReadStream(videoPath, { start, end });
+    const filetype = req.params.filetype;
 
-    // Stream the video chunk to the client
-    videoStream.pipe(res);
+    if (filetype !== 'video') {
+
+        const videoPath = "./uploads/" + req.params.filename;
+        var readStream = fs.createReadStream(videoPath);
+        readStream.pipe(res);
+    } else {
+
+
+        const range = req.headers.range;
+        if (!range) {
+            return res.status(400).send("Requires Range header");
+        }
+
+        const videoPath = "./uploads/" + req.params.filename;
+        const videoSize = fs.statSync(videoPath).size;
+
+        const CHUNK_SIZE = 10 ** 6; // 1MB
+        const start = Number(range.replace(/\D/g, ""));
+        const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+        const contentLength = end - start + 1;
+        const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4",
+        };
+
+        res.writeHead(206, headers);
+
+        const videoStream = fs.createReadStream(videoPath, { start, end });
+        videoStream.pipe(res);
+    }
 });
 
-app.get("/", function (req, res) {
-    res.sendFile(__dirname + "/index.html");
-});
+app.use(express.static(__dirname + "/views"));
 
-app.listen(8000, function () {
-    console.log("Listening on port 8000!");
+app.listen(2601, function () {
+    console.log("Listening on port 2601!");
 });

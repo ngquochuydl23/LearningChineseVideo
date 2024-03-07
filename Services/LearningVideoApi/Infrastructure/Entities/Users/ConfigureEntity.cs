@@ -1,31 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LearningVideoApi.Infrastructure.Entities.Topics;
+using Microsoft.EntityFrameworkCore;
 
-namespace LearningVideoApi.Infrastructure.Entities.Topics
+namespace LearningVideoApi.Infrastructure.Entities.Users
 {
     public static class ConfigureEntity
     {
-        public static void AddTopicEntities(this ModelBuilder modelBuilder)
+        public static void AddUserEntities(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TopicEntity>(entity =>
+            modelBuilder.Entity<UserEntity>(entity =>
             {
-                entity.ToTable("Topic");
+                entity.ToTable("User");
                 entity.HasKey(x => x.Id);
-            });
-
-            modelBuilder.Entity<TopicVideoEntity>(entity =>
-            {
-                entity.ToTable("TopicVideo");
-                entity.HasKey(x => x.Id);
-
-                entity
-                    .HasOne(x => x.Topic)
-                    .WithMany(topic => topic.TopicVideos)
-                    .HasForeignKey(x => x.TopicId);
-
-                entity
-                    .HasOne(x => x.Video)
-                    .WithMany(video => video.TopicVideos)
-                    .HasForeignKey(x => x.VideoId);
             });
         }
     }

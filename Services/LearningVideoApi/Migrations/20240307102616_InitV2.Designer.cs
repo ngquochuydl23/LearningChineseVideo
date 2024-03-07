@@ -6,14 +6,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 
 #nullable disable
 
 namespace LearningVideoApi.Migrations
 {
     [DbContext(typeof(LearningVideoDbContext))]
-    [Migration("20240127115611_MyFvToLike")]
-    partial class MyFvToLike
+    [Migration("20240307102616_InitV2")]
+    partial class InitV2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,9 +200,8 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Level")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -251,6 +251,16 @@ namespace LearningVideoApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("PlainTextWithTopic")
+                        .HasColumnType("text");
+
+                    b.Property<NpgsqlTsVector>("SearchVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Title", "Description", "Level" });
+
                     b.Property<string>("Thumbnail")
                         .IsRequired()
                         .HasColumnType("text");
@@ -268,6 +278,10 @@ namespace LearningVideoApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SearchVector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
+
                     b.ToTable("Video", (string)null);
                 });
 
@@ -281,6 +295,10 @@ namespace LearningVideoApi.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean");
@@ -308,6 +326,46 @@ namespace LearningVideoApi.Migrations
                     b.HasIndex("VideoId");
 
                     b.ToTable("VideoSubtitle", (string)null);
+                });
+
+            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Vocabularies.VocabularyEntity", b =>
+                {
+                    b.Property<string>("OriginWord")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Example")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("OppositeMeaning")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Pinyin")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SimiliarMeaning")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SinoVietnamese")
+                        .HasColumnType("text");
+
+                    b.Property<string>("VietnameseMean")
+                        .HasColumnType("text");
+
+                    b.Property<string>("WordType")
+                        .HasColumnType("text");
+
+                    b.HasKey("OriginWord");
+
+                    b.ToTable("Vocabulary", (string)null);
                 });
 
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.WatchedVideos.WatchedVideoEntity", b =>

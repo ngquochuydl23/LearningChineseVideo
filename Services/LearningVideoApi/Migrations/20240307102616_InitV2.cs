@@ -5,7 +5,7 @@
 namespace LearningVideoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Voca : Migration
+    public partial class InitV2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

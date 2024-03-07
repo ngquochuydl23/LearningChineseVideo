@@ -1,6 +1,5 @@
 ﻿
-using LearningVideoApi.Infrastructure.Entities.Comments;
-using LearningVideoApi.Infrastructure.Entities.Likes;
+
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.WatchedVideos;
 using LearningVideoApi.Infrastructure.Seedworks;
@@ -36,9 +35,6 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
 
         public ICollection<VideoSubtitleEntity> Subtitles { get; set; } = new List<VideoSubtitleEntity>();
 
-        public ICollection<CommentEntity> Comments { get; set; } = new List<CommentEntity>();
-
-        public ICollection<LikeEntity> Likes { get; set; } = new List<LikeEntity>();
 
         public ICollection<WatchedVideoEntity> WatchedVideos { get; set; } = new List<WatchedVideoEntity>();
 

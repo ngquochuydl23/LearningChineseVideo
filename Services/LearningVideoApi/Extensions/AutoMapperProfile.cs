@@ -4,8 +4,6 @@ using LearningVideoApi.Dtos.MyFavourite;
 using LearningVideoApi.Dtos.User;
 using LearningVideoApi.Dtos.Video;
 using LearningVideoApi.Dtos.Vocabulary;
-using LearningVideoApi.Infrastructure.Entities.Comments;
-using LearningVideoApi.Infrastructure.Entities.Likes;
 using LearningVideoApi.Infrastructure.Entities.Users;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Entities.Vocabularies;
@@ -21,8 +19,6 @@ namespace LearningVideoApi.Extensions
                  .ForMember(dest => dest.Topics, act => act.MapFrom(src => src.TopicVideos.Select(x => x.Topic.Title)));
 
             CreateMap<VideoSubtitleEntity, SubtitleDto>();
-            CreateMap<CommentEntity, CommentDto>();
-            CreateMap<LikeEntity, LikeDto>();
 
             CreateMap<VocabularyEntity, VocabularyDto>();
         }

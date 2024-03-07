@@ -23,82 +23,6 @@ namespace LearningVideoApi.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Comments.CommentEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long?>("ParentId")
-                        .IsRequired()
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("VideoId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("VideoId");
-
-                    b.ToTable("Comment", (string)null);
-                });
-
-            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Likes.LikeEntity", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("VideoId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("VideoId");
-
-                    b.ToTable("Like", (string)null);
-                });
-
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Topics.TopicEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -398,52 +322,6 @@ namespace LearningVideoApi.Migrations
                     b.ToTable("WatchedVideo", (string)null);
                 });
 
-            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Comments.CommentEntity", b =>
-                {
-                    b.HasOne("LearningVideoApi.Infrastructure.Entities.Comments.CommentEntity", "Parent")
-                        .WithMany("Childs")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearningVideoApi.Infrastructure.Entities.Users.UserEntity", "User")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearningVideoApi.Infrastructure.Entities.Videos.VideoEntity", "Video")
-                        .WithMany("Comments")
-                        .HasForeignKey("VideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Parent");
-
-                    b.Navigation("User");
-
-                    b.Navigation("Video");
-                });
-
-            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Likes.LikeEntity", b =>
-                {
-                    b.HasOne("LearningVideoApi.Infrastructure.Entities.Users.UserEntity", "User")
-                        .WithMany("Likes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearningVideoApi.Infrastructure.Entities.Videos.VideoEntity", "Video")
-                        .WithMany("Likes")
-                        .HasForeignKey("VideoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-
-                    b.Navigation("Video");
-                });
-
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Topics.TopicVideoEntity", b =>
                 {
                     b.HasOne("LearningVideoApi.Infrastructure.Entities.Topics.TopicEntity", "Topic")
@@ -493,11 +371,6 @@ namespace LearningVideoApi.Migrations
                     b.Navigation("Video");
                 });
 
-            modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Comments.CommentEntity", b =>
-                {
-                    b.Navigation("Childs");
-                });
-
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Topics.TopicEntity", b =>
                 {
                     b.Navigation("TopicVideos");
@@ -505,19 +378,11 @@ namespace LearningVideoApi.Migrations
 
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Users.UserEntity", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
                     b.Navigation("WatchedVideos");
                 });
 
             modelBuilder.Entity("LearningVideoApi.Infrastructure.Entities.Videos.VideoEntity", b =>
                 {
-                    b.Navigation("Comments");
-
-                    b.Navigation("Likes");
-
                     b.Navigation("Subtitles");
 
                     b.Navigation("TopicVideos");

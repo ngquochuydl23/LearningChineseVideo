@@ -1,6 +1,4 @@
 ﻿using LearningVideoApi.Dtos.Comment;
-using LearningVideoApi.Infrastructure.Entities.Comments;
-using LearningVideoApi.Infrastructure.Entities.Likes;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Entities.WatchedVideos;

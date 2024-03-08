@@ -1,5 +1,5 @@
-import { Box, Button, Popover, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Popover, Typography } from "@mui/material";
+import { useState } from "react";
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import { getVocabulary } from "src/services/api/vocabulary";
 import _ from "lodash";
@@ -23,7 +23,6 @@ const Word = ({
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-
     const separateExampleAsLine = (example) => {
         var chinese = _.map(example.split('。'))[0];
         var rest = _.map(example.split('。'))[1];
@@ -34,7 +33,6 @@ const Word = ({
 
         return examples;
     }
-
 
     const fetchWord = (word) => {
         getVocabulary(word)
@@ -112,9 +110,7 @@ const Word = ({
 
                                 </div>
                             }
-                            {error &&
-                                <div>Không tìm thấy tự vựng</div>
-                            }
+                            {error && <div>Không tìm thấy tự vựng</div>}
                         </Box>
 
                     </Popover>

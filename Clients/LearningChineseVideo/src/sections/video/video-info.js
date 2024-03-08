@@ -21,7 +21,7 @@ const VideoInfo = ({
                     fontSize: '20px',
                     color: '#e5d300'
                 }}
-                label={"HSK 1"} />
+                label={"HSK " + level} />
         )
     }
 
@@ -45,7 +45,7 @@ const VideoInfo = ({
                     fontSize="20px">
                     Cấp độ:
                 </Typography>
-                <LevelCard />
+                <LevelCard level={level}/>
             </Stack>
             <Stack
                 mt="20px"

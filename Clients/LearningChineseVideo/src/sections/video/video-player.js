@@ -150,12 +150,24 @@ const VideoPlayer = ({
                 const pinyinCues = webvtt.parse(pinyin.data, { strict: true }).cues;
                 const vietnameseCues = webvtt.parse(vietnamese.data, { strict: true }).cues;
 
-                setTranscripts({
-                    seg: segCues,
-                    chinese: chineseCues,
-                    pinyin: pinyinCues,
-                    vietnamese: vietnameseCues,
-                });
+
+                let vttLengths = [segCues.length, chineseCues.length, pinyinCues.length, vietnameseCues.length];
+
+
+                console.log(segCues.length + ' ' + chineseCues.length + ' ' + pinyinCues.length + ' ' + vietnameseCues.length);
+             
+                let maxVttLength = _.max(vttLengths)
+                console.log(maxVttLength);
+
+
+                if (_.every(vttLengths, x => x === maxVttLength)) {
+                    setTranscripts({
+                        seg: segCues,
+                        chinese: chineseCues,
+                        pinyin: pinyinCues,
+                        vietnamese: vietnameseCues,
+                    });
+                } 
             })
             .catch(error => {
                 console.log(error);

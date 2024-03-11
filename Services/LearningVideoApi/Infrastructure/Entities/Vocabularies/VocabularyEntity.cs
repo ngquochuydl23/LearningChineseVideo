@@ -1,4 +1,5 @@
-﻿using LearningVideoApi.Infrastructure.Seedworks;
+﻿using LearningVideoApi.Infrastructure.Entities.SavedVocabularies;
+using LearningVideoApi.Infrastructure.Seedworks;
 
 namespace LearningVideoApi.Infrastructure.Entities.Vocabularies
 {
@@ -20,5 +21,7 @@ namespace LearningVideoApi.Infrastructure.Entities.Vocabularies
 
 
         public string? SinoVietnamese { get; set; }
+
+        public SavedVocaEntity? SavedVoca { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 
+using LearningVideoApi.Infrastructure.Entities.SavedVocabularies;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.WatchedVideos;
 using LearningVideoApi.Infrastructure.Seedworks;
@@ -39,6 +40,9 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
         public ICollection<WatchedVideoEntity> WatchedVideos { get; set; } = new List<WatchedVideoEntity>();
 
         public ICollection<TopicVideoEntity> TopicVideos { get; set; } = new List<TopicVideoEntity>();
+
+
+        public ICollection<SavedVocaEntity> SavedVocabularies { get; set; } = new List<SavedVocaEntity>();
 
         public NpgsqlTsVector SearchVector { get; set; }
 

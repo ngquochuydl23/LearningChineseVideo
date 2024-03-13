@@ -56,7 +56,7 @@ export const TopNav = (props) => {
                         spacing={2}
                         sx={{
                             minHeight: TOP_NAV_HEIGHT,
-                            px: 2
+                           
                         }}>
                         {/* <Stack
                         alignItems="center"
@@ -69,8 +69,7 @@ export const TopNav = (props) => {
                         </IconButton>
                     </Stack> */}
                         <Stack alignItems="center"
-                            direction="row"
-                            spacing={2}>
+                            direction="row">
                             <Box
                                 component={NextLink}
                                 href="/"
@@ -84,8 +83,7 @@ export const TopNav = (props) => {
                         </Stack>
                         <Stack
                             alignItems="center"
-                            direction="row"
-                            spacing={2}>
+                            direction="row">
                             {user &&
                                 <Box ref={accountPopover.anchorRef}>
                                     <CustomAvatar

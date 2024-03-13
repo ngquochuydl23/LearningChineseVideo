@@ -48,11 +48,12 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Where(x => x.UserId == Id)
                 .Include(x => x.Video)
+                .ThenInclude(video => video.TopicVideos)
                 .OrderByDescending(x => x.CreatedAt)
                 .GroupBy(x => x.Video)
                 .Select(x => new
                 {
-                    Video = _mapper.Map<VideoDto>(x.Key),
+                    Video = x.Key,
                     LastUpdated = x.First().CreatedAt,
                     SavedCount = x.Count()
                 })

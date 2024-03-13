@@ -1,38 +1,8 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { Box, CardActionArea, CardMedia, Chip, MenuItem, Popover, Stack } from '@mui/material';
-import readMediaUrl from 'src/utils/read-media-url';
-import Link from 'next/link';
-import { useState } from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import moment from 'moment';
+import { Box, Chip, Stack, Typography } from "@mui/material";
+import moment from "moment";
+import readMediaUrl from "src/utils/read-media-url";
 
-const GridVideoAdminCard = ({
-    id,
-    thumbnail,
-    title,
-    level,
-    topics,
-    duration,
-    onDeleteItem,
-    createdAt
-}) => {
-
-
-    const [anchorEl, setAnchorEl] = useState(null);
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const idPopover = open ? 'simple-popover' : undefined;
-
+const SavedVocaVideo = ({ video, lastUpdated, savedCount }) => {
     return (
         <Stack
             direction="row"
@@ -52,7 +22,7 @@ const GridVideoAdminCard = ({
                         transition: 'transform .2s',
                         position: 'relative'
                     }}
-                    src={readMediaUrl(thumbnail)}
+                    src={readMediaUrl(video.thumbnail)}
                 />
                 <div
                     style={{
@@ -68,7 +38,7 @@ const GridVideoAdminCard = ({
                             fontSize: '14px',
                             color: 'white'
                         }}
-                        label={"HSK " + level} />
+                        label={"HSK " + video.level} />
                 </div>
             </div>
             <Box sx={{ padding: '10px', ml: '10px', width: "100%" }}>
@@ -82,39 +52,25 @@ const GridVideoAdminCard = ({
                         variant="h5"
                         sx={{ color: 'black' }}
                         component="div">
-                        {title}
+                        {video.title}
                     </Typography>
-                    <MoreVertIcon onClick={handleClick} />
+                    {/* <MoreVertIcon onClick={handleClick} /> */}
                 </Stack>
                 <Typography
                     fontSize='14px'
                     variant="subtitle2"
                     color="text.secondary">
-                    Tải lên lúc: {moment(createdAt).format("DD/MM/YYYY")}
+                    Tải lên lúc: {moment(video.createdAt ).format("DD/MM/YYYY")}
                 </Typography>
                 <Typography
                     fontSize='14px'
                     variant="subtitle2"
                     color="text.secondary">
-                    Chủ đề: {topics.join(', ')}
+                    Số từ vựng đã lưu: {savedCount}
                 </Typography>
             </Box>
-            <Popover
-                id={idPopover}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
-                }}>
-                <MenuItem
-                    onClick={() => onDeleteItem(id)}>
-                    Xóa video
-                </MenuItem>
-            </Popover>
         </Stack>
     )
 }
 
-export default GridVideoAdminCard;
+export default SavedVocaVideo;

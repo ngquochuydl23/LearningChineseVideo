@@ -1,6 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
-
+import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 
 export const items = [
   {
@@ -8,6 +7,13 @@ export const items = [
     path: '/',
     icon: (
       <HomeIcon />
+    )
+  },
+  {
+    title: 'Từ vựng đã lưu',
+    path: '/saved',
+    icon: (
+      <LocalLibraryIcon />
     )
   }
 ];

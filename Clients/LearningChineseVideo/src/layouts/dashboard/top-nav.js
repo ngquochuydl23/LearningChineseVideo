@@ -7,6 +7,7 @@ import {
     Avatar,
     Badge,
     Box,
+    Container,
     IconButton,
     Stack,
     SvgIcon,
@@ -18,7 +19,8 @@ import { usePopover } from 'src/hooks/use-popover';
 import { AccountPopover } from './account-popover';
 import { useAuth } from 'src/hooks/use-auth';
 import CustomAvatar from 'src/components/custom-avt';
-
+import { Logo } from 'src/components/logo';
+import NextLink from 'next/link';
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
 
@@ -27,7 +29,7 @@ export const TopNav = (props) => {
     const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
     const accountPopover = usePopover();
     const { user } = useAuth();
-   
+
     return (
         <>
             <Box
@@ -41,21 +43,22 @@ export const TopNav = (props) => {
                     },
                     top: 0,
                     width: {
-                        //  lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+                        // lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
                     },
                     zIndex: (theme) => theme.zIndex.appBar
                 }}
             >
-                <Stack
-                    alignItems="center"
-                    direction="row"
-                    justifyContent="space-between"
-                    spacing={2}
-                    sx={{
-                        minHeight: TOP_NAV_HEIGHT,
-                        px: 2
-                    }}>
+                <Container maxWidth='xl'>
                     <Stack
+                        alignItems="center"
+                        direction="row"
+                        justifyContent="space-between"
+                        spacing={2}
+                        sx={{
+                            minHeight: TOP_NAV_HEIGHT,
+                            px: 2
+                        }}>
+                        {/* <Stack
                         alignItems="center"
                         direction="row"
                         spacing={2}>
@@ -64,27 +67,43 @@ export const TopNav = (props) => {
                                 <Bars3Icon />
                             </SvgIcon>
                         </IconButton>
-                    </Stack>
-                    <Stack
-                        alignItems="center"
-                        direction="row"
-                        spacing={2}>     
-                        {user &&
-                            <Box ref={accountPopover.anchorRef}>
-                                <CustomAvatar
-                                    hasBorder
-                                    fullname={user.fullName}
-                                    src={user.avatar}
-                                    sx={{
-                                        cursor: 'pointer',
-                                        height: 40,
-                                        width: 40
-                                    }}
-                                    onClick={accountPopover.handleOpen} />
+                    </Stack> */}
+                        <Stack alignItems="center"
+                            direction="row"
+                            spacing={2}>
+                            <Box
+                                component={NextLink}
+                                href="/"
+                                sx={{
+                                    display: 'inline-flex',
+                                    height: 32,
+                                    width: 32
+                                }}>
+                                <Logo />
                             </Box>
-                        }
+                        </Stack>
+                        <Stack
+                            alignItems="center"
+                            direction="row"
+                            spacing={2}>
+                            {user &&
+                                <Box ref={accountPopover.anchorRef}>
+                                    <CustomAvatar
+                                        hasBorder
+                                        fullname={user.fullName}
+                                        src={user.avatar}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            height: 40,
+                                            width: 40
+                                        }}
+                                        onClick={accountPopover.handleOpen} />
+                                </Box>
+                            }
+                        </Stack>
                     </Stack>
-                </Stack>
+                </Container>
+
             </Box>
             <AccountPopover
                 anchorEl={accountPopover.anchorRef.current}

@@ -28,7 +28,7 @@ const Page = () => {
         validationSchema: Yup.object({
             phoneNumber: Yup
                 .string()
-                .max(11)
+                .max(11, 'Số điện thoại phải đủ 11 kí tự')
                 .required('Vui lòng nhập số điện thoại'),
             password: Yup
                 .string()

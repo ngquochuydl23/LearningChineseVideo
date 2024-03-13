@@ -30,10 +30,10 @@ export const Layout = withAuthGuard((props) => {
     return (
         <>
             {!hideHeader && <TopNav onNavOpen={() => setOpenNav(true)} />}
-            <SideNav
+            {/* <SideNav
                 onClose={() => setOpenNav(false)}
                 open={openNav}
-            />
+            /> */}
             <Container maxWidth='xl'>
                 {children}
             </Container>

@@ -20,6 +20,8 @@ export const AccountPopover = (props) => {
         [onClose, auth, router]
     );
 
+    console.log(user);
+
     return (
         <Popover
             anchorEl={anchorEl}
@@ -50,14 +52,28 @@ export const AccountPopover = (props) => {
                     LinkComponent={<Link href="/account" />}>
                     Tài khoản
                 </MenuItem>
-                <Divider />
+                {/* <Divider />
                 <MenuItem
                     onClick={() => {
                         onClose?.();
-                        router.push('/admin/videos')
-                    }}>
-                    Đến trang quản trị
-                </MenuItem>
+                        router.push('/saved')
+                    }}
+                    href="/saved"
+                    LinkComponent={<Link href="/saved" />}>
+                    Từ vựng đã lưu
+                </MenuItem> */}
+                {user?.role === "Administrator" &&
+                    <>
+                        <Divider />
+                        <MenuItem
+                            onClick={() => {
+                                onClose?.();
+                                router.push('/admin/videos')
+                            }}>
+                            Đến trang quản trị
+                        </MenuItem>
+                    </>
+                }
                 <Divider />
                 <MenuItem onClick={handleSignOut}>
                     Đăng xuất

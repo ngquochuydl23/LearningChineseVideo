@@ -5,24 +5,24 @@
 namespace LearningVideoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class SavedVoca01 : Migration
+    public partial class SavedVocav11 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "showedAt",
+                name: "ShowedAt",
                 table: "SavedVocaEntity",
-                newName: "ShowedAt");
+                newName: "ShowedAtDuration");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "ShowedAt",
+                name: "ShowedAtDuration",
                 table: "SavedVocaEntity",
-                newName: "showedAt");
+                newName: "ShowedAt");
         }
     }
 }

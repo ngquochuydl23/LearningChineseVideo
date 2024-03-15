@@ -7,6 +7,6 @@
         public string VocabularyId { get; set; }
 
 
-        public DateTime ShowedAt { get; set; }
+        public double ShowedAtDuration { get; set; }
     }
 }

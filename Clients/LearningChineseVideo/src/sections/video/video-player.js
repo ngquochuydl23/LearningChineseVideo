@@ -18,7 +18,6 @@ const TranscriptItem = ({
     startTime,
     selected,
     onSeek,
-
 }) => {
     return (
         <Box
@@ -89,10 +88,12 @@ const TranscriptItem = ({
 }
 
 const VideoPlayer = ({
+    id,
     videoUrl,
     subtitles,
     thumbnail
 }) => {
+
     const videoPlayerRef = useRef();
     const [currentTextSub, setCurrentTextSub] = useState();
     const [playedSeconds, setPlayedSeconds] = useState(0);
@@ -155,7 +156,7 @@ const VideoPlayer = ({
 
 
                 console.log(segCues.length + ' ' + chineseCues.length + ' ' + pinyinCues.length + ' ' + vietnameseCues.length);
-             
+
                 let maxVttLength = _.max(vttLengths)
                 console.log(maxVttLength);
 
@@ -167,7 +168,7 @@ const VideoPlayer = ({
                         pinyin: pinyinCues,
                         vietnamese: vietnameseCues,
                     });
-                } 
+                }
             })
             .catch(error => {
                 console.log(error);
@@ -221,6 +222,8 @@ const VideoPlayer = ({
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
                         <Word
+                            showedAt={playedSeconds}
+                            videoId={id}
                             onClose={() => setPlaying(true)}
                             onClick={() => setPlaying(false)}
                             word={word} />

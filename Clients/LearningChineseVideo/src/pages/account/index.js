@@ -66,7 +66,8 @@ const Page = () => {
                         direction="column"
                         spacing="25px">
                         <div className="relative rounded-full overflow-hidden flex">
-                            <CustomAvatar fullname={"Thanh Phương"}
+                            <CustomAvatar
+                                fullname={formik.values.fullName}
                                 onClick={() => document.getElementById('pick-image').click()}
                                 sx={{
                                     height: '180px',

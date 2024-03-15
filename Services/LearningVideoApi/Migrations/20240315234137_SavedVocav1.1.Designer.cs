@@ -13,8 +13,8 @@ using NpgsqlTypes;
 namespace LearningVideoApi.Migrations
 {
     [DbContext(typeof(LearningVideoDbContext))]
-    [Migration("20240311085442_SavedVoca0.1")]
-    partial class SavedVoca01
+    [Migration("20240315234137_SavedVocav1.1")]
+    partial class SavedVocav11
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,8 +43,8 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("ShowedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<double>("ShowedAtDuration")
+                        .HasColumnType("double precision");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

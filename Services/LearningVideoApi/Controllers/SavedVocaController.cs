@@ -80,7 +80,7 @@ namespace LearningVideoApi.Controllers
                 .FirstOrDefault(x => x.OriginWord.Equals(value.VocabularyId))
                     ?? throw new AppException("Vocabulary not found");
 
-            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(Id, video.Id, voca.OriginWord, value.ShowedAt));
+            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(Id, video.Id, voca.OriginWord, value.ShowedAtDuration));
             return Ok(_mapper.Map<SavedVocaDto>(savedVoca));
         }
     }

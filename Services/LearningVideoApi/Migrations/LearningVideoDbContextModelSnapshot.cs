@@ -40,8 +40,8 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<DateTime>("ShowedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<double>("ShowedAtDuration")
+                        .HasColumnType("double precision");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

@@ -1,13 +1,16 @@
-import { Box, Popover, Typography } from "@mui/material";
+import { Box, Button, Popover, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import { getVocabulary } from "src/services/api/vocabulary";
 import _ from "lodash";
-import { getVoca } from "src/services/api/voca-api";
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import { saveVoca } from "src/services/api/saved-voca-api";
 
 const Word = ({
-    word, onClick, detail, onClose
+    word, onClick, videoId, showedAt
 }) => {
+    const [saved, setSaved] = useState(false);
     const [error, setError] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [vocabulary, setVocabulary] = useState();
@@ -46,6 +49,29 @@ const Word = ({
                 console.log(err);
                 setError(err);
             });
+    }
+
+    const saveWord = () => {
+        if (!vocabulary)
+            return;
+
+        setSaved(!saved);
+        console.log();
+
+
+        if (saved) {
+
+            console.log("Remove saved list");
+            return;
+        }
+
+        console.log("Saving voca");
+
+        saveVoca({ videoId, word, showedAt })
+            .then(() => {
+                console.log("Saved voca");
+            })
+            .catch((err) => { console.log(err) })
     }
 
 
@@ -91,9 +117,28 @@ const Word = ({
                             horizontal: 'left',
                         }}>
                         <Box sx={{ width: '300px', p: 2 }}>
-                            <Typography
-                                fontWeight="600"
-                                fontSize="20px">{word}</Typography>
+                            <Stack
+                                justifyContent="space-between"
+                                direction="row">
+                                <Typography
+                                    fontWeight="600"
+                                    fontSize="20px">
+                                    {word}
+                                </Typography>
+                                {vocabulary &&
+                                    <Button
+                                        sx={{
+                                            backgroundColor: 'whitesmoke',
+                                            paddingX: '10px',
+                                            paddingY: '5px',
+                                            minWidth: '20px'
+                                        }}
+                                        onClick={saveWord}
+                                        variant="text">
+                                        {(saved ? <BookmarkIcon /> : <BookmarkBorderIcon />)}
+                                    </Button>
+                                }
+                            </Stack>
                             {(vocabulary) &&
                                 <div>
                                     <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}</p>

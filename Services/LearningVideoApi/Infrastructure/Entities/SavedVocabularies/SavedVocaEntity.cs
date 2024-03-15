@@ -13,7 +13,7 @@ namespace LearningVideoApi.Infrastructure.Entities.SavedVocabularies
 
         public string VocabularyId { get; set; }
 
-        public DateTime ShowedAt { get; set; }
+        public double ShowedAtDuration { get; set; }
 
         public VocabularyEntity Vocabulary { get; set; }
 
@@ -23,12 +23,12 @@ namespace LearningVideoApi.Infrastructure.Entities.SavedVocabularies
 
         public SavedVocaEntity() { }
 
-        public SavedVocaEntity(long userId, string videoId, string vocabularyId, DateTime showedAt)
+        public SavedVocaEntity(long userId, string videoId, string vocabularyId, double showedAtDuration)
         {
             UserId = userId;
             VideoId = videoId;
             VocabularyId = vocabularyId;
-            ShowedAt = showedAt;
+            ShowedAtDuration = showedAtDuration;
         }
     }
 }

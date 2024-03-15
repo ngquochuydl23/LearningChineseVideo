@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LearningVideoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class SavedVoca : Migration
+    public partial class SavedVocav1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace LearningVideoApi.Migrations
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     VideoId = table.Column<string>(type: "text", nullable: false),
                     VocabularyId = table.Column<string>(type: "text", nullable: false),
-                    showedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ShowedAt = table.Column<double>(type: "double precision", nullable: false),
                     IsDeleted = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastUpdated = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)

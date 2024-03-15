@@ -50,7 +50,7 @@ export const AccountPopover = (props) => {
                     LinkComponent={<Link href="/account" />}>
                     Tài khoản
                 </MenuItem>
-                {/* <Divider />
+                <Divider />
                 <MenuItem
                     onClick={() => {
                         onClose?.();
@@ -59,7 +59,7 @@ export const AccountPopover = (props) => {
                     href="/saved"
                     LinkComponent={<Link href="/saved" />}>
                     Từ vựng đã lưu
-                </MenuItem> */}
+                </MenuItem>
                 {user?.role === "Administrator" &&
                     <>
                         <Divider />

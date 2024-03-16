@@ -5,7 +5,7 @@ import { getVocabulary } from "src/services/api/vocabulary";
 import _ from "lodash";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { saveVoca } from "src/services/api/saved-voca-api";
+import { saveVoca, getSavedByVideo, delSavedVoca, checkSaved } from "src/services/api/saved-voca-api";
 
 const Word = ({
     word, onClick, videoId, showedAt
@@ -14,6 +14,7 @@ const Word = ({
     const [error, setError] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [vocabulary, setVocabulary] = useState();
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
         onClick();
@@ -40,9 +41,17 @@ const Word = ({
     const fetchWord = (word) => {
         getVocabulary(word)
             .then((res) => {
-                console.log("Result of : " + word);
                 console.log(res);
                 setVocabulary(res);
+                checkSaved(word, videoId, showedAt.from, showedAt.to)
+                    .then((res) => {
+                        setSaved(true);
+                        console.log("Restful: Voca is saved");
+                    })
+                    .catch((err) => {
+                        setSaved(false);
+                        console.log(err);
+                    })
             })
             .catch(err => {
                 setVocabulary(null);
@@ -55,18 +64,30 @@ const Word = ({
         if (!vocabulary)
             return;
 
-        setSaved(!saved);
+
         if (saved) {
+            setSaved(false);
             console.log("Remove saved list");
+            delSavedVoca(word, videoId, showedAt.from, showedAt.to)
+                .then((res) => {
+                    setSaved(false);
+                    console.log("Restful: Voca is removed");
+                })
+                .catch((err) => {
+                    setSaved(true);
+                    console.log(err);
+                })
             return;
         }
-
+        setSaved(true);
         saveVoca({
             videoId,
             vocabularyId: word,
-            showedAtDuration: showedAt
+            showedFrom: showedAt.from,
+            showedTo: showedAt.to
         })
             .then(() => {
+                setSaved(true);
                 console.log("Saved voca");
             })
             .catch((err) => {

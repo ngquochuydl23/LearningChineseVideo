@@ -56,22 +56,23 @@ const Word = ({
             return;
 
         setSaved(!saved);
-        console.log();
-
-
         if (saved) {
-
             console.log("Remove saved list");
             return;
         }
 
-        console.log("Saving voca");
-
-        saveVoca({ videoId, word, showedAt })
+        saveVoca({
+            videoId,
+            vocabularyId: word,
+            showedAtDuration: showedAt
+        })
             .then(() => {
                 console.log("Saved voca");
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => {
+                setSaved(false);
+                console.log(err)
+            })
     }
 
 

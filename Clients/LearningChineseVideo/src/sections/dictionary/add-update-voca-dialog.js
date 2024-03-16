@@ -149,7 +149,7 @@ export default function AddUpdateVocaDialog({
                             error={!!(formik.touched.similiarMeaning && formik.errors.similiarMeaning)}
                             fullWidth
                             helperText={formik.touched.similiarMeaning && formik.errors.similiarMeaning}
-                            label="Từ dồng nghĩa"
+                            label="Từ gần nghĩa"
                             id="similiarMeaning"
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}

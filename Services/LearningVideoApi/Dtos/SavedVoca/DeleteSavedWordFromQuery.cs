@@ -1,11 +1,8 @@
 ﻿namespace LearningVideoApi.Dtos.SavedVoca
 {
-    public class CreateSavedVoca
+    public class DeleteSavedWordFromQuery
     {
         public string VideoId { get; set; }
-
-        public string VocabularyId { get; set; }
-
 
         public double ShowedFrom { get; set; }
 

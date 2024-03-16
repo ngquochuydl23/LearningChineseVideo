@@ -3,6 +3,7 @@ using System;
 using LearningVideoApi.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NpgsqlTypes;
@@ -12,9 +13,11 @@ using NpgsqlTypes;
 namespace LearningVideoApi.Migrations
 {
     [DbContext(typeof(LearningVideoDbContext))]
-    partial class LearningVideoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240316134527_SavedVocav1.3")]
+    partial class SavedVocav13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,10 +43,7 @@ namespace LearningVideoApi.Migrations
                     b.Property<DateTime>("LastUpdated")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<double>("ShowedFrom")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("ShowedTo")
+                    b.Property<double>("ShowedAtDuration")
                         .HasColumnType("double precision");
 
                     b.Property<long>("UserId")

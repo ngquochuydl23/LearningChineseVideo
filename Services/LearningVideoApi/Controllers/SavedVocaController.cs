@@ -11,6 +11,8 @@ using LearningVideoApi.Infrastructure.Seedworks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LearningVideoApi.Controllers
 {
@@ -46,6 +48,7 @@ namespace LearningVideoApi.Controllers
 
             var savedVocabularyAsVideo = _savedVocaRepo
                 .GetQueryableNoTracking()
+                .Where(x => !x.IsDeleted)
                 .Where(x => x.UserId == Id)
                 .Include(x => x.Video)
                 .ThenInclude(video => video.TopicVideos)
@@ -60,10 +63,24 @@ namespace LearningVideoApi.Controllers
                 .OrderByDescending(x => x.LastUpdated)
                 .ToList();
 
-
             return Ok(savedVocabularyAsVideo);
         }
 
+        [Authorize]
+        [HttpGet("{originalWord}")]
+        public IActionResult GetOriginalVoca(string originalWord, [FromQuery] CheckSavedWordFromQueryDto query)
+        {
+            var savedVoca = _savedVocaRepo
+                .GetQueryableNoTracking()
+                .FirstOrDefault(x => !x.IsDeleted
+                    && x.UserId == Id
+                    && x.VocabularyId.Equals(originalWord)
+                    && x.VideoId.Equals(query.VideoId)
+                    && x.ShowedFrom == query.ShowedFrom && x.ShowedTo == query.ShowedTo)
+                    ?? throw new AppException("Not saved");
+
+            return Ok(savedVoca);
+        }
 
         [Authorize]
         [HttpPost]
@@ -80,8 +97,40 @@ namespace LearningVideoApi.Controllers
                 .FirstOrDefault(x => x.OriginWord.Equals(value.VocabularyId))
                     ?? throw new AppException("Vocabulary not found");
 
-            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(Id, video.Id, voca.OriginWord, value.ShowedAtDuration));
+            if (_savedVocaRepo
+                .GetQueryableNoTracking()
+                .FirstOrDefault(x => !x.IsDeleted
+                    && x.UserId == Id
+                    && x.VocabularyId.Equals(value.VocabularyId)
+                    && x.VideoId.Equals(value.VideoId)
+                    && x.ShowedFrom == value.ShowedFrom && x.ShowedTo == value.ShowedTo) != null)
+                throw new AppException("You've already saved this word");
+
+
+
+            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(Id, video.Id, voca.OriginWord, value.ShowedFrom, value.ShowedTo));
             return Ok(_mapper.Map<SavedVocaDto>(savedVoca));
+        }
+
+        [Authorize]
+        [HttpDelete("{originalWord}")]
+        public IActionResult DeleteSavedVoca(string originalWord, [FromQuery] DeleteSavedWordFromQuery query)
+        {
+            var savedVoca = _savedVocaRepo
+                .GetQueryable()
+                .FirstOrDefault(x => !x.IsDeleted
+                    && x.UserId == Id
+                    && x.VocabularyId.Equals(originalWord)
+                    && x.VideoId.Equals(query.VideoId)
+                    && x.ShowedFrom == query.ShowedFrom && x.ShowedTo == query.ShowedTo)
+            ?? throw new AppException("Not saved");
+
+            savedVoca.IsDeleted = true;
+            savedVoca.LastUpdated = DateTime.UtcNow;
+
+            _savedVocaRepo.SaveChanges();
+
+            return Ok();
         }
     }
 }

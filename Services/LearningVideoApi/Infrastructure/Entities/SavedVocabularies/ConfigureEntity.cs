@@ -14,8 +14,8 @@ namespace LearningVideoApi.Infrastructure.Entities.SavedVocabularies
 
                 entity
                     .HasOne(x => x.Vocabulary)
-                    .WithOne(voca => voca.SavedVoca)
-                    .HasForeignKey<SavedVocaEntity>(x => x.VocabularyId);
+                    .WithMany(voca => voca.SavedVocabularies)
+                    .HasForeignKey(x => x.VocabularyId);
 
                 entity
                     .HasOne(x => x.User)

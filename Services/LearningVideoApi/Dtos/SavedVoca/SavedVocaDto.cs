@@ -5,7 +5,9 @@ namespace LearningVideoApi.Dtos.SavedVoca
 {
     public class SavedVocaDto: BaseDto<string>
     {
-        public double ShowedAtDuration { get; set; }
+        public double ShowedFrom { get; set; }
+
+        public double ShowedTo { get; set; }
 
         public VideoDto Video { get; set; }
 

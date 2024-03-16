@@ -33,7 +33,7 @@ const Page = () => {
                     alignItems="center"
                     justifyContent="space-between"
                     direction="row">
-                    <Stack>
+                    <Stack spacing="20px">
                         <Typography
                             mb="30px"
                             variant="h4">

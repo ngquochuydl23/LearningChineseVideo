@@ -96,6 +96,10 @@ const VideoPlayer = ({
 
     const videoPlayerRef = useRef();
     const [currentTextSub, setCurrentTextSub] = useState();
+    const [currentSubTime, setCurrentSubTime] = useState({
+        from: 0,
+        to: 0
+    })
     const [playedSeconds, setPlayedSeconds] = useState(0);
     const [transcripts, setTranscripts] = useState({
         seg: [],
@@ -119,6 +123,10 @@ const VideoPlayer = ({
         const currentCue = _.find(cues, x => (currentTime >= x.start && currentTime <= x.end))
 
         if (currentCue) {
+            setCurrentSubTime({
+                from: currentCue.start,
+                to: currentCue.end
+            })
             setCurrentTextSub(currentCue.text)
         }
     }
@@ -222,7 +230,7 @@ const VideoPlayer = ({
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
                         <Word
-                            showedAt={playedSeconds}
+                            showedAt={currentSubTime}
                             videoId={id}
                             onClose={() => setPlaying(true)}
                             onClick={() => setPlaying(false)}

@@ -5,7 +5,7 @@ import { getVocabulary } from "src/services/api/vocabulary";
 import _ from "lodash";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import { saveVoca, getSavedByVideo, delSavedVoca, checkSaved } from "src/services/api/saved-voca-api";
+import { saveVoca, delSavedVoca, checkSaved } from "src/services/api/saved-voca-api";
 
 const Word = ({
     word, onClick, videoId, showedAt
@@ -42,6 +42,7 @@ const Word = ({
         getVocabulary(word)
             .then((res) => {
                 console.log(res);
+                setError(null);
                 setVocabulary(res);
                 checkSaved(word, videoId, showedAt.from, showedAt.to)
                     .then((res) => {
@@ -51,7 +52,7 @@ const Word = ({
                     .catch((err) => {
                         setSaved(false);
                         console.log(err);
-                    })
+                    });
             })
             .catch(err => {
                 setVocabulary(null);

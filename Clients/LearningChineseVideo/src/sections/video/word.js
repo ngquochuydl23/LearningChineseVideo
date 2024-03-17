@@ -6,26 +6,20 @@ import _ from "lodash";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import { saveVoca, delSavedVoca, checkSaved } from "src/services/api/saved-voca-api";
+import { useSnackbar } from 'notistack';
 
 const Word = ({
-    word, onClick, videoId, showedAt
+    word,
+    onClick,
+    videoId,
+    showedAt,
+    sentence
 }) => {
+    
+    const { enqueueSnackbar } = useSnackbar();
     const [saved, setSaved] = useState(false);
     const [error, setError] = useState(null);
-    const [anchorEl, setAnchorEl] = useState(null);
     const [vocabulary, setVocabulary] = useState();
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-        onClick();
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
 
     const separateExampleAsLine = (example) => {
         var chinese = _.map(example.split('。'))[0];
@@ -34,7 +28,6 @@ const Word = ({
         if (rest) {
             examples = [chinese, ..._.map(rest.split('. '))];
         }
-
         return examples;
     }
 
@@ -71,28 +64,64 @@ const Word = ({
             console.log("Remove saved list");
             delSavedVoca(word, videoId, showedAt.from, showedAt.to)
                 .then((res) => {
+                    enqueueSnackbar(`Đã xóa lưu thành công từ vựng`, {
+                        variant: 'success',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
                     setSaved(false);
                     console.log("Restful: Voca is removed");
                 })
                 .catch((err) => {
+                    enqueueSnackbar(`Lỗi ` + err, {
+                        variant: 'error',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
                     setSaved(true);
                     console.log(err);
                 })
             return;
         }
         setSaved(true);
+        console.log({
+            videoId,
+            vocabularyId: word,
+            showedFrom: showedAt.from,
+            showedTo: showedAt.to,
+            sentence: sentence
+        });
         saveVoca({
             videoId,
             vocabularyId: word,
             showedFrom: showedAt.from,
-            showedTo: showedAt.to
+            showedTo: showedAt.to,
+            sentence: sentence
         })
             .then(() => {
                 setSaved(true);
+                enqueueSnackbar(`Đã lưu thành công từ vựng ${word}`, {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }
+                });
                 console.log("Saved voca");
             })
             .catch((err) => {
                 setSaved(false);
+                enqueueSnackbar(`Lỗi ` + err, {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'bottom',
+                        horizontal: 'right'
+                    }
+                });
                 console.log(err)
             })
     }

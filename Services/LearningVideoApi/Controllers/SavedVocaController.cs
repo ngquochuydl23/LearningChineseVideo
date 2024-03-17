@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LearningVideoApi.Controllers
 {
@@ -20,7 +19,6 @@ namespace LearningVideoApi.Controllers
     [ApiController]
     public class SavedVocaController : BaseController
     {
-        private readonly IJwtExtension _jwtExtension;
         private readonly IRepository<SavedVocaEntity> _savedVocaRepo;
         private readonly IRepository<VideoEntity> _videoRepo;
         private readonly IRepository<VocabularyEntity> _vocaRepo;
@@ -36,7 +34,6 @@ namespace LearningVideoApi.Controllers
         {
             _mapper = mapper;
             _savedVocaRepo = savedVocaRepo;
-            _jwtExtension = jwtExtension;
             _videoRepo = videoRepo;
             _vocaRepo = vocaRepo;
         }
@@ -64,6 +61,21 @@ namespace LearningVideoApi.Controllers
                 .ToList();
 
             return Ok(savedVocabularyAsVideo);
+        }
+
+        [Authorize]
+        [HttpGet("Video/{videoId}")]
+        public IActionResult GetSavedVocaById(string videoId)
+        {
+            var savedVocabularyInVideo = _savedVocaRepo
+                .GetQueryableNoTracking()
+                .Where(x => !x.IsDeleted)
+                .Where(x => x.UserId == Id)
+                .Where(x => x.VideoId.Equals(videoId))
+                .OrderByDescending(x => x.CreatedAt)
+                .ToList();
+
+            return Ok(savedVocabularyInVideo);
         }
 
         [Authorize]
@@ -106,9 +118,13 @@ namespace LearningVideoApi.Controllers
                     && x.ShowedFrom == value.ShowedFrom && x.ShowedTo == value.ShowedTo) != null)
                 throw new AppException("You've already saved this word");
 
-
-
-            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(Id, video.Id, voca.OriginWord, value.ShowedFrom, value.ShowedTo));
+            var savedVoca = _savedVocaRepo.Insert(new SavedVocaEntity(
+                Id, 
+                video.Id,
+                voca.OriginWord, 
+                value.ShowedFrom, 
+                value.ShowedTo,
+                value.Sentence));
             return Ok(_mapper.Map<SavedVocaDto>(savedVoca));
         }
 

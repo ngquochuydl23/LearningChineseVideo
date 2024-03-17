@@ -8,19 +8,6 @@ import { getSavedByVideo } from 'src/services/api/saved-voca-api';
 
 
 const Page = () => {
-
-    const [videos, setVideos] = useState([]);
-
-    useEffect(() => {
-        getSavedByVideo()
-            .then((res) => {
-                setVideos(res);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [])
-
     return (
         <>
             <Head>
@@ -41,10 +28,6 @@ const Page = () => {
                             variant="h4">
                             Từ vựng đã lưu
                         </Typography>
-                        {_.map(videos, (item) => (
-                            <SavedVocaVideo {...item} />
-                        ))}
-
                     </Stack>
                 </Stack>
             </Box>

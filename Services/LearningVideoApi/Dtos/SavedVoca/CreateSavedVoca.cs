@@ -10,5 +10,7 @@
         public double ShowedFrom { get; set; }
 
         public double ShowedTo { get; set; }
+
+        public string? Sentence { get; set; }
     }
 }

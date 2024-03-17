@@ -17,6 +17,8 @@ namespace LearningVideoApi.Infrastructure.Entities.SavedVocabularies
 
         public double ShowedTo { get; set; }
 
+        public string? Sentence { get; set; }
+
         public VocabularyEntity Vocabulary { get; set; }
 
         public UserEntity User { get; set; }
@@ -25,13 +27,20 @@ namespace LearningVideoApi.Infrastructure.Entities.SavedVocabularies
 
         public SavedVocaEntity() { }
 
-        public SavedVocaEntity(long userId, string videoId, string vocabularyId, double showedFrom, double showedTo)
+        public SavedVocaEntity(
+            long userId,
+            string videoId,
+            string vocabularyId, 
+            double showedFrom, 
+            double showedTo,
+            string? sentence)
         {
             UserId = userId;
             VideoId = videoId;
             VocabularyId = vocabularyId;
             ShowedFrom = showedFrom;
             ShowedTo = showedTo;
+            Sentence = sentence;
         }
     }
 }

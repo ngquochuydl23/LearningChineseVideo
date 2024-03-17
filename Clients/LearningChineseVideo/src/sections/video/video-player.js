@@ -161,8 +161,8 @@ const VideoPlayer = ({
 
 
                 let vttLengths = [segCues.length, chineseCues.length, pinyinCues.length, vietnameseCues.length];
-
-
+                
+                console.log(vietnameseCues);
                 console.log(segCues.length + ' ' + chineseCues.length + ' ' + pinyinCues.length + ' ' + vietnameseCues.length);
 
                 let maxVttLength = _.max(vttLengths)
@@ -230,6 +230,7 @@ const VideoPlayer = ({
                     }}>
                     {currentTextSub && _.map(currentTextSub.split('-'), word => (
                         <Word
+                            sentence={transcripts.chinese.find(x => x.start === currentSubTime.from && x.end === currentSubTime.to)?.text}
                             showedAt={currentSubTime}
                             videoId={id}
                             onClose={() => setPlaying(true)}

@@ -8,9 +8,7 @@ import { getSavedByVideo } from 'src/services/api/saved-voca-api';
 
 
 const Page = () => {
-
     const [videos, setVideos] = useState([]);
-
     useEffect(() => {
         getSavedByVideo()
             .then((res) => {
@@ -19,7 +17,7 @@ const Page = () => {
             .catch((err) => {
                 console.log(err);
             })
-    }, [])
+    }, []);
 
     return (
         <>
@@ -44,7 +42,6 @@ const Page = () => {
                         {_.map(videos, (item) => (
                             <SavedVocaVideo {...item} />
                         ))}
-
                     </Stack>
                 </Stack>
             </Box>

@@ -3,8 +3,7 @@ import { Box, Unstable_Grid2 as Grid, Stack, Typography } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
 import { useEffect, useState } from 'react';
 import _ from 'lodash';
-import SavedVocaVideo from 'src/sections/saved/saved-voca-video';
-import { getSavedByVideo, getSavedInVideo } from 'src/services/api/saved-voca-api';
+import { getSavedInVideo } from 'src/services/api/saved-voca-api';
 import { useRouter } from 'next/router';
 import SavedVoca from 'src/sections/saved/saved-voca';
 
@@ -34,14 +33,14 @@ const Page = () => {
                     direction="row">
                     <Stack
                         spacing="20px"
-                        sx={{ paddingBottom: '20px' }}>
+                        sx={{ paddingBottom: '20px', width: '100%' }}>
                         <Typography
                             mb="30px"
                             variant="h4">
                             Từ vựng đã lưu
-                            <Stack>
+                            <Stack spacing="20px" pt="20px">
                                 {_.map(vocas, (voca) => (
-                                    <SavedVoca {...voca}/>
+                                    <SavedVoca {...voca} />
                                 ))}
                             </Stack>
                         </Typography>

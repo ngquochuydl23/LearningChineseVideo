@@ -22,3 +22,5 @@ export const checkSaved = (vocaId, videoId, showedFrom, showTo) =>
     });
 
 export const getSavedByVideo = () => http.get('/SavedVoca/GetSavedByVideo');
+
+export const getSavedInVideo = (videoId) => http.get('/SavedVoca/Video/' + videoId);

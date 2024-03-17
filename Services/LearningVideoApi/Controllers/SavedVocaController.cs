@@ -72,6 +72,7 @@ namespace LearningVideoApi.Controllers
                 .Where(x => !x.IsDeleted)
                 .Where(x => x.UserId == Id)
                 .Where(x => x.VideoId.Equals(videoId))
+                .Include(x => x.Vocabulary)
                 .OrderByDescending(x => x.CreatedAt)
                 .ToList();
 

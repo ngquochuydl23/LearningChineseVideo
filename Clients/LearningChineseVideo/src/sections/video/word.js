@@ -88,13 +88,6 @@ const Word = ({
             return;
         }
         setSaved(true);
-        console.log({
-            videoId,
-            vocabularyId: word,
-            showedFrom: showedAt.from,
-            showedTo: showedAt.to,
-            sentence: sentence
-        });
         saveVoca({
             videoId,
             vocabularyId: word,

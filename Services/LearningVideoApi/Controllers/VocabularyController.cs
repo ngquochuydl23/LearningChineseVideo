@@ -74,6 +74,7 @@ namespace LearningVideoApi.Controllers
                 OppositeMeaning = value.OppositeMeaning,
                 Example = value.Example,
                 SinoVietnamese = value.SinoVietnamese,
+                Level= value.Level
             });
 
             return Ok(_mapper.Map<VocabularyDto>(vocabulary));

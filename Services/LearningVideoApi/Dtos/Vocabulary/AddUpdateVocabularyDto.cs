@@ -17,5 +17,7 @@
         public string? OppositeMeaning { get; set; }
 
         public string? Example { get; set; }
+
+        public int? Level { get; set; }
     }
 }

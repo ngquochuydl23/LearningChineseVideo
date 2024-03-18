@@ -17,5 +17,7 @@
         public string? Example { get; set; }
 
         public string? SinoVietnamese { get; set; }
+
+        public int? Level { get; set; }
     }
 }

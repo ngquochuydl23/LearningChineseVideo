@@ -20,6 +20,7 @@ namespace LearningVideoApi.Infrastructure.Entities.Vocabularies
 
         public string? Example { get; set; }
 
+        public int? Level { get; set; }
 
         public string? SinoVietnamese { get; set; }
 

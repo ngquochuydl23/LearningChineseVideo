@@ -41,7 +41,7 @@ const SavedVoca = ({
                 }}
                 variant="subtitle2">
                 <p style={{ marginTop: 0 }}>Câu: {sentence}</p>
-                <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}</p>
+                <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}   {vocabulary.sinoVietnamese && `【${vocabulary.sinoVietnamese}】`}</p>
                 <p style={{ fontSize: '14px' }}>Từ loại: {vocabulary.wordType}</p>
                 <p style={{ fontSize: '14px' }}>Nghĩa: {vocabulary.vietnameseMean}</p>
                 <p style={{ fontSize: '14px' }}>Ví dụ:</p>

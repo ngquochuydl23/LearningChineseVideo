@@ -68,7 +68,7 @@ namespace LearningVideoApi.Controllers
         public IActionResult GetSavedVocaById(string videoId)
         {
             var savedVocabularyInVideo = _savedVocaRepo
-                .GetQueryableNoTracking()
+                .GetQueryableNoTracking()   
                 .Where(x => !x.IsDeleted)
                 .Where(x => x.UserId == Id)
                 .Where(x => x.VideoId.Equals(videoId))

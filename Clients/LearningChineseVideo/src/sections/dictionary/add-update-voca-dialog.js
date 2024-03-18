@@ -5,18 +5,20 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
-import { Stack, TextField } from '@mui/material';
+import { FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { useRouter } from 'next/router';
 import { addVoca, editVocabulary } from 'src/services/api/voca-api';
 import AlertDialog from 'src/components/alert-dialog';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
+
 
 export default function AddUpdateVocaDialog({
     open, editedVoca, handleClose, onAdded
 }) {
     const [showAlert, setShowAlert] = useState(false);
-
+    const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
 
 
@@ -29,7 +31,8 @@ export default function AddUpdateVocaDialog({
             pinyin: '',
             similiarMeaning: '',
             oppositeMeaning: '',
-            example: ''
+            example: '',
+            level: undefined
         })
     }
 
@@ -42,7 +45,8 @@ export default function AddUpdateVocaDialog({
             pinyin: '',
             similiarMeaning: '',
             oppositeMeaning: '',
-            example: ''
+            example: '',
+            level: undefined
         },
 
         onSubmit: (values, helpers) => {
@@ -51,10 +55,26 @@ export default function AddUpdateVocaDialog({
                     .then((res) => {
                         onAdded();
                         handleClose();
+                        enqueueSnackbar(`Thêm từ  thành công`, {
+                            variant: 'success',
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'right'
+                            }
+                        });
                     })
                     .catch(err => {
                         if (err === 'Vocabulary is already exist') {
                             setShowAlert(true);
+
+                        } else {
+                            enqueueSnackbar(`Thêm từ thất bại`, {
+                                variant: 'error',
+                                anchorOrigin: {
+                                    vertical: 'bottom',
+                                    horizontal: 'right'
+                                }
+                            });
                         }
                     })
                     .finally(() => resetForm())
@@ -62,12 +82,26 @@ export default function AddUpdateVocaDialog({
                 editVocabulary(editedVoca.originWord, values)
                     .then((res) => {
                         console.log(res);
+                        enqueueSnackbar(`Sửa từ ${editedVoca.originWord} thành công`, {
+                            variant: 'success',
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'right'
+                            }
+                        });
                         onAdded();
                         resetForm();
                         handleClose();
                     })
                     .catch(err => {
                         console.log(err);
+                        enqueueSnackbar(`Sửa từ ${editedVoca.originWord} thất bại`, {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'right'
+                            }
+                        });
                     })
                     .finally(() => resetForm())
             }
@@ -77,7 +111,7 @@ export default function AddUpdateVocaDialog({
     useEffect(() => {
         if (editedVoca) {
             formik.setValues(editedVoca);
-        } else resetForm()
+        } else resetForm();
     }, [editedVoca])
 
 
@@ -109,6 +143,7 @@ export default function AddUpdateVocaDialog({
                             helperText={formik.touched.vietnameseMean && formik.errors.vietnameseMean}
                             label="Nghĩa"
                             multiline
+                        
                             minRows={5}
                             id="vietnameseMean"
                             onBlur={formik.handleBlur}
@@ -165,6 +200,30 @@ export default function AddUpdateVocaDialog({
                             onChange={formik.handleChange}
                             value={formik.values.oppositeMeaning}
                         />
+
+
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Chọn cấp độ</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="level"
+                                fullWidth
+                                onChange={(e) => {
+                                    formik.setFieldValue('level', e.target.value)
+                                }}
+                                value={formik.values.level}
+                                error={formik.errors.level && formik.touched.level}
+                                helperText={formik.errors.level}
+                                isSearchable
+                                label='Chọn cấp độ'>
+                                <MenuItem value={1}>HSK 1</MenuItem>
+                                <MenuItem value={2}>HSK 2</MenuItem>
+                                <MenuItem value={3}>HSK 3</MenuItem>
+                                <MenuItem value={4}>HSK 4</MenuItem>
+                                <MenuItem value={5}>HSK 5</MenuItem>
+                            </Select>
+                        </FormControl>
+
                         <TextField
                             error={!!(formik.touched.example && formik.errors.example)}
                             fullWidth

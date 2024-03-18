@@ -65,6 +65,9 @@ export const VocaTable = (props) => {
                   Từ trái nghĩa
                 </TableCell>
                 <TableCell>
+                  Cấp độ
+                </TableCell>
+                <TableCell>
                   Câu ví dụ
                 </TableCell>
               </TableRow>
@@ -88,7 +91,7 @@ export const VocaTable = (props) => {
                       {item.originWord}
                     </TableCell>
                     <TableCell>
-                      {item.vietnameseMean}
+                      <p style={{ whiteSpace: 'pre-wrap' }}>{item.vietnameseMean}</p>
                     </TableCell>
                     <TableCell>
                       {item.sinoVietnamese}
@@ -104,6 +107,9 @@ export const VocaTable = (props) => {
                     </TableCell>
                     <TableCell>
                       {item.oppositeMeaning}
+                    </TableCell>
+                    <TableCell>
+                      {item.level}
                     </TableCell>
                     <TableCell>
                       {item.example}

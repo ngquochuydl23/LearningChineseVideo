@@ -4,6 +4,7 @@ using LearningVideoApi.Infrastructure.Entities.Vocabularies;
 using LearningVideoApi.Infrastructure.Exceptions;
 using LearningVideoApi.Infrastructure.Seedworks;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.Emit;
 
 
 namespace LearningVideoApi.Controllers
@@ -74,7 +75,7 @@ namespace LearningVideoApi.Controllers
                 OppositeMeaning = value.OppositeMeaning,
                 Example = value.Example,
                 SinoVietnamese = value.SinoVietnamese,
-                Level= value.Level
+                Level = value.Level
             });
 
             return Ok(_mapper.Map<VocabularyDto>(vocabulary));
@@ -96,6 +97,9 @@ namespace LearningVideoApi.Controllers
             voca.Example = value.Example;
             voca.LastUpdated = DateTime.UtcNow;
             voca.SinoVietnamese = value.SinoVietnamese;
+            voca.WordType = value.WordType;
+            voca.Level = value.Level;
+
 
             _vocaRepo.SaveChanges();
             return Ok(_mapper.Map<VocabularyDto>(voca));

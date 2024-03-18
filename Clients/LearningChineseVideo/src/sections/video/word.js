@@ -188,6 +188,7 @@ const Word = ({
                                 <div>
                                     <p style={{ marginTop: 0 }}>{`[`}{vocabulary.pinyin}{`]`}   {vocabulary.sinoVietnamese && `【${vocabulary.sinoVietnamese}】`}</p>
                                     <p style={{ fontSize: '14px' }}>Từ loại: {vocabulary.wordType}</p>
+                                    <p style={{ fontSize: '14px' }}>Cấp độ: {vocabulary.level}</p>
                                     <p style={{ fontSize: '14px' }}>Nghĩa: {vocabulary.vietnameseMean}</p>
                                     <p style={{ fontSize: '14px' }}>Ví dụ:</p>
                                     <div style={{ marginLeft: '20px' }}>

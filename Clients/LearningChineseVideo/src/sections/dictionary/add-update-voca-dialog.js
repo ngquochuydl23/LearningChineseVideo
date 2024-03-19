@@ -143,7 +143,6 @@ export default function AddUpdateVocaDialog({
                             helperText={formik.touched.vietnameseMean && formik.errors.vietnameseMean}
                             label="Nghĩa"
                             multiline
-                        
                             minRows={5}
                             id="vietnameseMean"
                             onBlur={formik.handleBlur}

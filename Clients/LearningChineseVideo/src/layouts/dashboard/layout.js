@@ -5,6 +5,7 @@ import { withAuthGuard } from 'src/hocs/with-auth-guard';
 import { SideNav } from './side-nav';
 import { TopNav } from './top-nav';
 import { Box, Container } from '@mui/material';
+import HayugoFooter from 'src/components/footer';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -37,6 +38,7 @@ export const Layout = withAuthGuard((props) => {
             <Container maxWidth='xl'>
                 {children}
             </Container>
+            <HayugoFooter />
         </>
     );
 });

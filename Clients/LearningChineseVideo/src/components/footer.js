@@ -11,7 +11,7 @@ const HayugoFooter = () => {
                     <Grid
                         sx={{ padding: '25px' }}
                         xl="5">
-                        <Box sx={{ width: '70%' }}>
+                        <Box sx={{ width: '80%' }}>
                             <img
                                 style={{ height: '70px' }}
                                 src={'/hayugo-logo_landscape.png'} />
@@ -24,7 +24,7 @@ const HayugoFooter = () => {
                     <Grid
                         sx={{ padding: '25px' }}
                         xl="3.5">
-                        <Box pt="20px">
+                        <Box pt="70px">
                             <Typography
                                 fontSize="20px"
                                 variant="h5">
@@ -46,7 +46,7 @@ const HayugoFooter = () => {
                     <Grid
                         sx={{ padding: '25px' }}
                         xl="3.5">
-                        <Box pt="20px">
+                        <Box pt="60px">
                             <Typography
                                 variant="subtitle1">
                                 {`Bản quyền thuộc về nhóm nghiên cứu đề tài “Xây dựng ngữ liệu trực tuyến phục vụ tra cứu học tập, tra cứu tiếng Trung cho người học tiếng Trung ở Việt Nam”`}

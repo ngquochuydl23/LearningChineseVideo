@@ -87,7 +87,7 @@ const HayugoFooter = () => {
                                 </p>
                                 <p>{`Facebook: `}
                                     <span style={{ fontWeight: '600' }}>
-                                        <a style={{ color: 'black' }} href="https://www.facebook.com/">Nguyễn Huy</a>
+                                        <a style={{ color: 'black' }} href="https://www.facebook.com/pgonevn/">Nguyễn Huy</a>
                                     </span>
                                 </p>
                             </Typography>

@@ -70,8 +70,6 @@ namespace LearningVideoApi.Controllers
         [HttpPost("signUp")]
         public IActionResult SignUp([FromBody] SignUpRequestDto input)
         {
-            var validator = new SignUpRequestValidator();
-            validator.ValidateAndThrow(input);
 
             if (_userRepo.GetQueryableNoTracking()
                 .FirstOrDefault(x => x.Email.Equals(input.Email)) != null)

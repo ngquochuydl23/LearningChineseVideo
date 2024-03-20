@@ -37,10 +37,14 @@ const Page = () => {
         },
         validationSchema: Yup.object().shape({
             fullName: Yup.string()
+                .trim()
                 .required('Vui lòng nhập họ tên'),
             phoneNumber: Yup.string()
+                .trim()
+                .matches(/^\S*$/, 'Không hợp lệ')
                 .required('Vui lòng nhập số điện thoại'),
             email: Yup.string()
+                .trim()
                 .email('Vui lòng nhập đúng định dạng')
                 .required('Vui lòng nhập địa chỉ chi tiết'),
             gender: Yup.number()
@@ -57,6 +61,7 @@ const Page = () => {
                     router.push('/');
                 })
                 .catch(err => {
+                    console.log(err);
                     if (err === 'Email is already used') {
                         setError({
                             title: 'Đăng ký không thành công!',
@@ -72,7 +77,7 @@ const Page = () => {
                     else {
                         setError({
                             title: 'Đăng ký không thành công!',
-                            content: err
+                            content: err.toString()
                         })
                     }
                 })

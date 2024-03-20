@@ -8,10 +8,6 @@ namespace LearningVideoApi.Validators
     {
         public SignUpRequestValidator()
         {
-            RuleFor(x => ConvertToUnsign(x.FullName))
-                .NotEmpty()
-                .Matches(@"(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})")
-                .WithMessage("Full name must not be empty");
 
             RuleFor(x => x.Email)
                 .NotEmpty()

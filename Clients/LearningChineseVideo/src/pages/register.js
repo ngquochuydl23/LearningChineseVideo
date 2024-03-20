@@ -42,6 +42,7 @@ const Page = () => {
             phoneNumber: Yup.string()
                 .trim()
                 .matches(/^\S*$/, 'Không hợp lệ')
+                .length(10, 'Vui lòng nhập đủ 10 kí tự')
                 .required('Vui lòng nhập số điện thoại'),
             email: Yup.string()
                 .trim()

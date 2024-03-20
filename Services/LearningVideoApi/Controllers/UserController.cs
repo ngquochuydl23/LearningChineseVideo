@@ -6,7 +6,6 @@ using LearningVideoApi.Extensions.JwtHelpers;
 using LearningVideoApi.Infrastructure.Entities.Users;
 using LearningVideoApi.Infrastructure.Exceptions;
 using LearningVideoApi.Infrastructure.Seedworks;
-using LearningVideoApi.Validators;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

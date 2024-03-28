@@ -1,4 +1,5 @@
-﻿using LearningVideoApi.Infrastructure.Entities.Users;
+﻿using LearningVideoApi.Infrastructure.Entities.Topics;
+using LearningVideoApi.Infrastructure.Entities.Users;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Entities.Vocabularies;
 using LearningVideoApi.Infrastructure.Entities.WatchedVideos;
@@ -20,6 +21,7 @@ namespace LearningVideoApi.Infrastructure
             modelBuilder.AddVideoEntities();
             modelBuilder.AddWatchedVideoEntities();
             modelBuilder.AddVocaEntity();
+            modelBuilder.AddTopicEntities();
         }
     }
 }

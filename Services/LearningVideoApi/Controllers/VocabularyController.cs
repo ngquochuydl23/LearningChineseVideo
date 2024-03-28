@@ -52,7 +52,7 @@ namespace LearningVideoApi.Controllers
 
             return Ok(_mapper.Map<VocabularyDto>(voca));
         }
-
+            
         [HttpPost]
         public IActionResult AddVocabulary([FromBody] AddUpdateVocabularyDto value)
         {

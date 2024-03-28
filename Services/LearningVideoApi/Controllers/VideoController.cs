@@ -8,6 +8,7 @@ using LearningVideoApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LearningVideoApi.Controllers
 {
@@ -81,7 +82,7 @@ namespace LearningVideoApi.Controllers
             return Ok(_mapper.Map<VideoDto>(video));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         public IActionResult AddVideo([FromBody] CreateVideoDto value)
         {
@@ -200,6 +201,27 @@ namespace LearningVideoApi.Controllers
             _videoRepo.SaveChanges();
 
             return Ok();
+        }
+
+        [HttpGet("Level/{hskLevel}")]
+        public IActionResult GetVideosByLevel(string hskLevel, [FromQuery] FromQueryAsCollection query)
+        {
+            var videos = _videoRepo
+                            .GetQueryableNoTracking()
+                            .Include(x => x.TopicVideos)
+                            .ThenInclude(topicVideo => topicVideo.Topic)
+                            .Where(x => !x.IsDeleted && x.Level.Equals(hskLevel));
+
+            if (query.Offset.HasValue && query.Limit.HasValue)
+            {
+                videos = videos
+                    .Skip(query.Offset.Value)
+                    .Take(query.Limit.Value);
+            }
+
+            videos = videos
+                .OrderByDescending(x => x.ViewerCount);
+            return Ok(_mapper.Map<ICollection<VideoDto>>(videos.ToList()));
         }
 
         private TopicVideoEntity AddTopicToVideo(VideoEntity video, string topicTitle)

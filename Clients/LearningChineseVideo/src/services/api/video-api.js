@@ -14,4 +14,4 @@ export const viewVideo = (id) => http.post('/Video/' + id + '/View');
 
 export const delVideo = (id) => http.delete('/Video/' + id);
 
-export const getVideosByHSK = (hskLevel) => http.get()
+export const getVideosByHSK = (hskLevel, offset, limit) => http.get('Video/Level/' + hskLevel, { params: { offset, limit } })

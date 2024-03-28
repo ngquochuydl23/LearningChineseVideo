@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearningVideoApi.Dtos.Video;
+using LearningVideoApi.Infrastructure;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Exceptions;
@@ -20,11 +21,13 @@ namespace LearningVideoApi.Controllers
         private readonly IRepository<VideoEntity> _videoRepo;
         private readonly IRepository<TopicEntity> _topicRepo;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly LearningVideoDbContext _dbContext;
 
         public VideoController(
             IMapper mapper,
             IRepository<VideoEntity> videoRepo,
             IRepository<TopicEntity> topicRepo,
+            LearningVideoDbContext dbContext,
             IHttpContextAccessor httpContextAccessor,
             IUnitOfWork unitOfWork) : base(httpContextAccessor)
         {
@@ -32,6 +35,7 @@ namespace LearningVideoApi.Controllers
             _videoRepo = videoRepo;
             _topicRepo = topicRepo;
             _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -125,9 +129,47 @@ namespace LearningVideoApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult EditVideoInfo(string id, [FromBody] string value)
+        public IActionResult EditVideoInfo(string id, [FromBody] UpdateVideoDto value)
         {
-            return Ok();
+            var video = _videoRepo
+                .GetQueryable()
+                .Include(x => x.Subtitles)
+                .Include(x => x.TopicVideos)
+                .FirstOrDefault(x => !x.IsDeleted && x.Id.Equals(id))
+                    ?? throw new AppException("Video not found");
+
+            video.Title = value.Title;
+            video.Level = value.Level;
+            video.Description = value.Description;
+            video.LastUpdated = DateTime.Now;
+
+
+             
+
+            foreach (var updateSubtitleDto in value.Subtitles)
+            {
+                var subtitle = video.Subtitles.FirstOrDefault(x => !x.IsDeleted && x.Id == updateSubtitleDto.Id);
+
+                subtitle.Url = updateSubtitleDto.Url;
+
+                _dbContext.Entry(subtitle).CurrentValues.SetValues(subtitle);
+            }
+
+      
+            if (!value.Topics.Any())
+            {
+                throw new AppException("Topics must not be empty");    
+            }
+
+            video.TopicVideos.Clear();
+            foreach (var topic in value.Topics)
+            {
+                video.TopicVideos.Add(AddTopicToVideo(video, topic));
+            }
+
+            _videoRepo.SaveChanges();
+
+            return Ok(video);
         }
 
         [Authorize]

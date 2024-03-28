@@ -12,6 +12,7 @@ import GridVideoAdminCard from 'src/components/grid-video-admin-card';
 import { useEffect, useState } from 'react';
 import { delVideo, getVideos } from 'src/services/api/video-api';
 import { useSnackbar } from 'notistack';
+import UpdateVideoDialog from 'src/sections/update-video-dialog';
 
 
 const Page = () => {
@@ -84,6 +85,9 @@ const Page = () => {
                         }
                     </Stack>
                 </Container>
+                <UpdateVideoDialog
+                    handleClose={() => { }}
+                    open={true} />
             </Box>
         </>
     )

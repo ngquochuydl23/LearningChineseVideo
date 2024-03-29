@@ -41,15 +41,41 @@ export default function UpdateVideoDialog({
         },
 
         onSubmit: (values, helpers) => {
-
-            //onUpdated();
-
             editVideo(video.id, values)
                 .then((res) => {
                     console.log(res);
-                  //  onUpdated();
+                    onUpdated();
+                    handleClose();
+                    enqueueSnackbar("Cập nhật thành công", {
+                        variant: 'success',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
+
                 })
-                .catch((err) => { console.log(err) })
+                .catch((err) => {
+                    console.log(err);
+                    if (err === "Topics must not be empty") {
+                        enqueueSnackbar(`Chủ đề không được để trống`, {
+                            variant: 'error',
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'right'
+                            }
+                        });
+                        return;
+                    }
+
+                    enqueueSnackbar(err, {
+                        variant: 'error',
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }
+                    });
+                })
         }
     });
 

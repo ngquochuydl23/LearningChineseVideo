@@ -89,6 +89,7 @@ const Page = () => {
                 </Container>
                 <UpdateVideoDialog
                     video={editingVideo}
+                    onUpdated={fetchVideo}
                     handleClose={() => { setEditingVideo()}}
                     open={Boolean(editingVideo)} />
             </Box>

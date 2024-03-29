@@ -19,6 +19,7 @@ const Page = () => {
     const { enqueueSnackbar } = useSnackbar();
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [editingVideo, setEditingVideo] = useState(null);
 
     const fetchVideo = () => {
         setLoading(true);
@@ -80,14 +81,16 @@ const Page = () => {
                                 <GridVideoAdminCard
                                     {...video}
                                     onDeleteItem={deleteVideo}
+                                    onClick={() => setEditingVideo(video)}
                                 />
                             ))
                         }
                     </Stack>
                 </Container>
                 <UpdateVideoDialog
-                    handleClose={() => { }}
-                    open={true} />
+                    video={editingVideo}
+                    handleClose={() => { setEditingVideo()}}
+                    open={Boolean(editingVideo)} />
             </Box>
         </>
     )

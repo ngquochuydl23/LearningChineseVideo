@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Layout as AdminLayout } from 'src/layouts/admin-layout/layout';
 import { VocaTable } from 'src/sections/dictionary/Voca-table';
 import { getVocas } from 'src/services/api/voca-api';
-import AddUpdateVocaDialog from 'src/sections/dictionary/add-update-voca-dialog';
+import AddUpdateVocaDialog from 'src/sections/add-update-voca-dialog';
 import ReactSearchBox from 'react-search-box';
 import _ from 'lodash';
 

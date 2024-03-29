@@ -8,34 +8,28 @@ import { useFormik } from 'formik';
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { addVoca, editVocabulary } from 'src/services/api/voca-api';
-import AlertDialog from 'src/components/alert-dialog';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { MuiChipsInput } from 'mui-chips-input';
+import { editVideo } from 'src/services/api/video-api';
 
 
 export default function UpdateVideoDialog({
-    open, handleClose
+    open, handleClose, video, onUpdated
 }) {
-    const [showAlert, setShowAlert] = useState(false);
     const { enqueueSnackbar } = useSnackbar();
     const router = useRouter();
 
-
-    // const resetForm = () => {
-    //     formik.setValues({
-    //         originWord: '',
-    //         vietnameseMean: '',
-    //         sinoVietnamese: '',
-    //         wordType: '',
-    //         pinyin: '',
-    //         similiarMeaning: '',
-    //         oppositeMeaning: '',
-    //         example: '',
-    //         level: undefined
-    //     })
-    // }
+    const resetForm = () => {
+        formik.setValues({
+            title: '',
+            description: '',
+            topics: [],
+            subtitles: [],
+            level: 0
+        })
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -43,23 +37,33 @@ export default function UpdateVideoDialog({
             description: '',
             topics: [],
             subtitles: [],
-            videoUrl: '',
-            thumbnail: '',
-            duration: 0,
-            mimetype: 'video/mp4',
-            level: 0
+            level: 1
         },
 
         onSubmit: (values, helpers) => {
 
+            //onUpdated();
+
+            editVideo(video.id, values)
+                .then((res) => {
+                    console.log(res);
+                  //  onUpdated();
+                })
+                .catch((err) => { console.log(err) })
         }
     });
 
-    // useEffect(() => {
-    //     if (editedVoca) {
-    //         formik.setValues(editedVoca);
-    //     } else resetForm();
-    // }, [editedVoca])
+    useEffect(() => {
+        if (video) {
+            formik.setValues({
+                title: video.title,
+                description: video.description,
+                topics: video.topics,
+                subtitles: [],
+                level: video.level
+            });
+        } else resetForm();
+    }, [video])
 
 
     return (
@@ -86,7 +90,6 @@ export default function UpdateVideoDialog({
                             onChange={formik.handleChange}
                             value={formik.values.title}
                         />
-
                         <TextField
                             sx={{ marginTop: "20px" }}
                             required
@@ -98,8 +101,6 @@ export default function UpdateVideoDialog({
                             onChange={formik.handleChange}
                             value={formik.values.description}
                         />
-
-
                         <Box mt="20px">
                             <Typography variant="subtitle1">Chủ đề*</Typography>
                             <Typography variant="caption">
@@ -122,26 +123,13 @@ export default function UpdateVideoDialog({
                                 }}
                             />
                         </Box>
-
-
-
                     </Stack>
                 </DialogContent>
                 <DialogActions>
                     <Button
                         sx={{ color: 'gray' }}
                         onClick={() => {
-                            formik.setValues({
-                                title: '',
-                                description: '',
-                                topics: [],
-                                subtitles: [],
-                                videoUrl: '',
-                                thumbnail: '',
-                                duration: 0,
-                                mimetype: 'video/mp4',
-                                level: 0
-                            })
+                            resetForm();
                             handleClose();
                         }}>
                         Hủy

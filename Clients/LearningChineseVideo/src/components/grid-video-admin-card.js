@@ -14,7 +14,7 @@ const GridVideoAdminCard = ({
     title,
     level,
     topics,
-    duration,
+    onClick,
     onDeleteItem,
     createdAt
 }) => {
@@ -37,13 +37,15 @@ const GridVideoAdminCard = ({
         <Stack
             direction="row"
             sx={{ width: '100%', textDecoration: 'none' }}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                position: 'relative'
-            }}>
+            <div
+                onClick={onClick}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    alignItems: 'flex-end',
+                    position: 'relative'
+                }}>
                 <img
                     style={{
                         borderRadius: '10px',
@@ -71,7 +73,8 @@ const GridVideoAdminCard = ({
                         label={"HSK " + level} />
                 </div>
             </div>
-            <Box sx={{ padding: '10px', ml: '10px', width: "100%" }}>
+            <Box
+                sx={{ padding: '10px', ml: '10px', width: "100%" }}>
                 <Stack
                     justifyContent="space-between"
                     direction="row"

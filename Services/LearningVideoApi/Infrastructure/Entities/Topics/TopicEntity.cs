@@ -13,7 +13,7 @@ namespace LearningVideoApi.Infrastructure.Entities.Topics
 
         public TopicEntity(string title)
         {
-            Id = GenerateStringId(title);
+            Id = Guid.NewGuid().ToString();
             Title = title;
         }
     }

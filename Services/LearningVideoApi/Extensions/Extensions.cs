@@ -34,6 +34,7 @@ namespace LearningVideoApi.Extensions
             if (!openApi.Exists())
                 return services;
 
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
@@ -50,6 +51,8 @@ namespace LearningVideoApi.Extensions
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
+
+                    
                     Description = "Insira o token JWT desta maneira: Bearer {seu token}",
                     Name = "Authorization",
                     Scheme = "bearer",

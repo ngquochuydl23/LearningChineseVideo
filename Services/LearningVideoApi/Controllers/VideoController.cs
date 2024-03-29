@@ -164,6 +164,9 @@ namespace LearningVideoApi.Controllers
             video.TopicVideos.Clear();
             foreach (var topic in value.Topics)
             {
+
+                
+
                 video.TopicVideos.Add(AddTopicToVideo(video, topic));
             }
 

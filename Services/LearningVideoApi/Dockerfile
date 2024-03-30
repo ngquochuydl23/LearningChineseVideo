@@ -18,8 +18,8 @@ RUN dotnet publish "LearningVideoApi.csproj" -c Release -o /app/publish /p:UseAp
 
 FROM base AS final
 WORKDIR /app
-
+ARG $ASPNETCORE_ENVIRONMENT
 ENV ASPNETCORE_URLS http://*:80
-ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_ENVIRONMENT=$ASPNETCORE_ENVIRONMENT
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "LearningVideoApi.dll"]

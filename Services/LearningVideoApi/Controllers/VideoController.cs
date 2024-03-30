@@ -49,6 +49,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
+                .Include(x => x.Subtitles.OrderBy(sub => sub.Id))
                 .OrderByDescending(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
                 .Where(x => !string.IsNullOrEmpty(level) 

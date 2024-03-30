@@ -29,15 +29,5 @@ services:
     ports:
       - 2501:80
     restart: always
-
-  learning-chinese-video-api-staging:
-    image: learning-chinese-video-api
-    container_name: learning-chinese-video-api
-    build:
-      context: ./Services/LearningVideoApi
-      dockerfile: DockerfileStaging.dockerfile
-    ports:
-      - 2501:80
-    restart: always 
   
 

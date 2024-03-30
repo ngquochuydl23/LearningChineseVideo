@@ -16,7 +16,7 @@ import { uploadFile } from 'src/services/api/upload-api';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const UpdateVttFile = ({
-    vttId, title, inputDomId, onUploaded
+    vttId, title, inputDomId, onUploaded, onRemove
 }) => {
     const [vtt, setVtt] = useState(null);
     const onPickVttFile = (event) => {
@@ -91,7 +91,10 @@ const UpdateVttFile = ({
                             </Typography>
                         </Box>
                         <Button
-                            onClick={() => setVtt(null)}
+                            onClick={() => {
+                                setVtt(null);
+                                onRemove(vttId);
+                            }}
                             sx={{ color: '#696969', paddingX: '0px' }}>
                             <CloseIcon />
                         </Button>
@@ -99,7 +102,7 @@ const UpdateVttFile = ({
                 </Card>
                 : <Button
                     onClick={() => document.getElementById(inputDomId)?.click()}
-                    variant='contained' sx={{ width: '250px' }}>
+                    variant='outlined' sx={{ width: '250px' }}>
                     {title}
                 </Button>
             }
@@ -184,6 +187,37 @@ export default function UpdateVideoDialog({
         } else resetForm();
     }, [video])
 
+    const updateElementOfSubtitle = (data) => {
+        var items = formik.values.subtitles;
+        if (items.length < 0) {
+            return;
+        }
+
+        var index = items.findIndex(x => x.id == data.id);
+        if (index === -1) {
+            formik.setFieldValue('subtitles', [...items, data])
+        } else {
+            items[index] = data;
+            formik.setFieldValue('subtitles', items)
+        }
+    }
+
+
+    const removeVttFile = (vttId) => {
+        var items = formik.values.subtitles;
+        console.log(items);
+        if (items.length < 0) {
+            return;
+        }
+        var index = items.findIndex(x => x.id == vttId);
+        if (index >= 0) {
+            formik.setFieldValue('subtitles', items.filter(x => x.id !== vttId))
+        }
+    }
+
+    if (!video) {
+        return null;
+    }
 
     return (
         <Dialog
@@ -247,17 +281,27 @@ export default function UpdateVideoDialog({
                             mt="20px">
                             <UpdateVttFile
                                 title={`Cập nhật VTT cách từ`}
-                                // vttId={}
-                                onUploaded={(vtt) => { console.log(vtt) }}
+                                vttId={video.subtitles[0].id}
+                                onRemove={removeVttFile}
+                                onUploaded={updateElementOfSubtitle}
                                 inputDomId="vtt-cach-tu" />
                             <UpdateVttFile
                                 title={`Cập nhật VTT tiếng Trung`}
+                                onRemove={removeVttFile}
+                                vttId={video.subtitles[1].id}
+                                onUploaded={updateElementOfSubtitle}
                                 inputDomId="vtt-tieng-trung" />
                             <UpdateVttFile
                                 title={`Cập nhật VTT phiên âm`}
+                                onUploaded={updateElementOfSubtitle}
+                                onRemove={removeVttFile}
+                                vttId={video.subtitles[2].id}
                                 inputDomId="vtt-phien-am" />
                             <UpdateVttFile
                                 title={`Cập nhật VTT tiếng Việt`}
+                                onUploaded={updateElementOfSubtitle}
+                                onRemove={removeVttFile}
+                                vttId={video.subtitles[3].id}
                                 inputDomId="vtt-tieng-viet" />
                         </Stack>
                     </Stack>

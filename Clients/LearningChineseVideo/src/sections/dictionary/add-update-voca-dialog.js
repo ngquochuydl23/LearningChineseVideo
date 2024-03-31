@@ -215,6 +215,7 @@ export default function AddUpdateVocaDialog({
                                 helperText={formik.errors.level}
                                 isSearchable
                                 label='Chọn cấp độ'>
+                                <MenuItem value={null}>Bỏ chọn</MenuItem>
                                 <MenuItem value={1}>HSK 1</MenuItem>
                                 <MenuItem value={2}>HSK 2</MenuItem>
                                 <MenuItem value={3}>HSK 3</MenuItem>

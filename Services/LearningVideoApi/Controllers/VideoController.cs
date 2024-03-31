@@ -52,11 +52,11 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.Subtitles.OrderBy(sub => sub.Id))
                 .OrderByDescending(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
-                .Where(x => !string.IsNullOrEmpty(level) 
-                    ? (x.Level.Equals(level)) 
+                .Where(x => !string.IsNullOrEmpty(level)
+                    ? (x.Level.Equals(level))
                     : true)
-                .Where(p => !string.IsNullOrEmpty(search) 
-                    ? p.SearchVector.Matches(EF.Functions.ToTsQuery(search + ":*")) 
+                .Where(p => !string.IsNullOrEmpty(search)
+                    ? p.SearchVector.Matches(EF.Functions.ToTsQuery(search + ":*"))
                     : true);
 
             if (query.Offset.HasValue && query.Limit.HasValue)
@@ -80,7 +80,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
-                .Include(x => x.Subtitles)
+                .Include(x => x.Subtitles.OrderBy(sub => sub.Id))
                 .FirstOrDefault(x => x.Id.Equals(chineseId) && !x.IsDeleted)
                     ?? throw new AppException("Video does not exist");
 
@@ -95,7 +95,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .FirstOrDefault(x => x.Title.Equals(value.Title) && !x.IsDeleted) != null)
                 throw new AppException("Video is already created");
-            
+
 
             using (_unitOfWork.Begin())
             {
@@ -145,7 +145,7 @@ namespace LearningVideoApi.Controllers
             video.LastUpdated = DateTime.Now;
 
 
-             
+
 
             foreach (var updateSubtitleDto in value.Subtitles)
             {
@@ -156,17 +156,17 @@ namespace LearningVideoApi.Controllers
                 _dbContext.Entry(subtitle).CurrentValues.SetValues(subtitle);
             }
 
-      
+
             if (!value.Topics.Any())
             {
-                throw new AppException("Topics must not be empty");    
+                throw new AppException("Topics must not be empty");
             }
 
             video.TopicVideos.Clear();
             foreach (var topic in value.Topics)
             {
 
-                
+
 
                 video.TopicVideos.Add(AddTopicToVideo(video, topic));
             }
@@ -198,7 +198,7 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Where(x => !x.IsDeleted);
-          
+
 
             if (query.Offset.HasValue && query.Limit.HasValue)
             {
@@ -222,7 +222,7 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Where(x => !x.IsDeleted);
-     
+
 
             if (query.Offset.HasValue && query.Limit.HasValue)
             {

@@ -38,7 +38,7 @@ const GridVideoAdminCard = ({
             direction="row"
             sx={{ width: '100%', textDecoration: 'none' }}>
             <div
-                onClick={onClick}
+                onClick={onClick}   
                 style={{
                     display: 'flex',
                     flexDirection: 'column',

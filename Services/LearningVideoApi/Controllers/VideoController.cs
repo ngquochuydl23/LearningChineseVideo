@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LearningVideoApi.Dtos.Video;
 using LearningVideoApi.Infrastructure;
+using LearningVideoApi.Infrastructure.Entities.SavedVocabularies;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Exceptions;
@@ -20,6 +21,7 @@ namespace LearningVideoApi.Controllers
         private readonly IMapper _mapper;
         private readonly IRepository<VideoEntity> _videoRepo;
         private readonly IRepository<TopicEntity> _topicRepo;
+        private readonly IRepository<SavedVocaEntity> _saveVocaRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly LearningVideoDbContext _dbContext;
 
@@ -27,6 +29,7 @@ namespace LearningVideoApi.Controllers
             IMapper mapper,
             IRepository<VideoEntity> videoRepo,
             IRepository<TopicEntity> topicRepo,
+            IRepository<SavedVocaEntity> saveVocaRepo,
             LearningVideoDbContext dbContext,
             IHttpContextAccessor httpContextAccessor,
             IUnitOfWork unitOfWork) : base(httpContextAccessor)
@@ -35,6 +38,7 @@ namespace LearningVideoApi.Controllers
             _videoRepo = videoRepo;
             _topicRepo = topicRepo;
             _unitOfWork = unitOfWork;
+            _saveVocaRepo = saveVocaRepo;
             _dbContext = dbContext;
         }
 
@@ -140,11 +144,37 @@ namespace LearningVideoApi.Controllers
                     ?? throw new AppException("Video not found");
 
             video.Title = value.Title;
-            video.Level = value.Level;
             video.Description = value.Description;
             video.LastUpdated = DateTime.Now;
 
+            if (!value.Level.Equals("-1"))
+            {
+                video.Level = value.Level;
+            } 
+            else
+            {
+                video.HasAutoLabeled = true;
+                var commonLevel = _saveVocaRepo
+                    .GetQueryableNoTracking()
+                    .Include(x => x.Vocabulary)
+                    .Where(x => !x.IsDeleted)
+                    .Where(x => x.UserId == 2)
+                    .Where(x => x.Vocabulary != null)
+                    .Where(x => x.VideoId.Equals(id))
+                    .GroupBy(x => x.Vocabulary.Level)
+                    .Select(x => new
+                    {
+                        Level = x.Key,
+                        Count = x.Count(),
+                    })
+                    .Where(x => x.Level != null)
+                    .ToList()
+                    .OrderByDescending(x => x.Count)
+                    .First();
 
+                video.Level = commonLevel.Level.ToString();
+                
+            }
 
 
             foreach (var updateSubtitleDto in value.Subtitles)

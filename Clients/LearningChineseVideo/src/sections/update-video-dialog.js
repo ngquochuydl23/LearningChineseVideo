@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useFormik } from 'formik';
-import { Box, Card, Stack, TextField, Typography } from '@mui/material';
+import { Box, Card, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -132,10 +132,11 @@ export default function UpdateVideoDialog({
             description: '',
             topics: [],
             subtitles: [],
-            level: 1
+            level: 0
         },
 
         onSubmit: (values, helpers) => {
+            //console.log(values)
             editVideo(video.id, values)
                 .then((res) => {
                     console.log(res);
@@ -275,6 +276,34 @@ export default function UpdateVideoDialog({
                                     width: '100%'
                                 }}
                             />
+                        </Box>
+                        <Box mt="20px">
+                            <Typography variant='subtitle1'>Chọn cấp độ*</Typography>
+                            <Typography variant='caption'>Chọn cấp độ cho video để người dùng có thể tìm video phù hợp với trình độ</Typography>
+                            <Box marginY={'20px'}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Chọn cấp độ</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="level"
+                                        fullWidth
+                                        onChange={(e) => {
+                                            formik.setFieldValue('level', e.target.value)
+                                        }}
+                                        value={formik.values.level}
+                                        error={formik.errors.level && formik.touched.level}
+                                        helperText={formik.errors.level}
+                                        isSearchable
+                                        label='Chọn cấp độ'>
+                                        <MenuItem value={-1}>Tự động</MenuItem>
+                                        <MenuItem value={1}>HSK 1</MenuItem>
+                                        <MenuItem value={2}>HSK 2</MenuItem>
+                                        <MenuItem value={3}>HSK 3</MenuItem>
+                                        <MenuItem value={4}>HSK 4</MenuItem>
+                                        <MenuItem value={5}>HSK 5</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Box>
                         </Box>
                         <Stack
                             spacing="10px"

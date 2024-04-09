@@ -26,8 +26,11 @@ COPY . .
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
+RUN \
+  if [ "$NODE_ENV" = "production" ]; then yarn build; \
+  else echo "Lockfile not found." && yarn build:staging; \
+  fi
 
-RUN yarn build
 
 # If using npm comment out above and use below instead
 # RUN npm run build
@@ -35,9 +38,7 @@ RUN yarn build
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
-
-#ENV NODE_ENV production
-ENV NODE_ENV staging
+#ENV NODE_ENV staging
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
 

@@ -67,12 +67,8 @@ const Page = () => {
 
         onSubmit: async (values, helpers) => {
             try {
-
-
                 await addVideo(values);
                 router.push('/admin/videos');
-
-                console.log(values);
                 enqueueSnackbar(`Tạo video thành công`, {
                     variant: 'success',
                     anchorOrigin: {

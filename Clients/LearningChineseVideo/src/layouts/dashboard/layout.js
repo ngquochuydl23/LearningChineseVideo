@@ -38,7 +38,7 @@ export const Layout = withAuthGuard((props) => {
             <Container maxWidth='xl'>
                 {children}
             </Container>
-            {/* <HayugoFooter /> */}
+            <HayugoFooter />
         </>
     );
 });

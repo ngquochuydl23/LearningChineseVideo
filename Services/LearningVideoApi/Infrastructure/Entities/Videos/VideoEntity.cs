@@ -34,6 +34,9 @@ namespace LearningVideoApi.Infrastructure.Entities.Videos
 
         public string Level { get; set; }
 
+
+        public bool HasAutoLabeled { get; set; } = false;
+
         public ICollection<VideoSubtitleEntity> Subtitles { get; set; } = new List<VideoSubtitleEntity>();
 
 

@@ -13,6 +13,8 @@ namespace LearningVideoApi.Dtos.Video
 
         public string Description { get; set; }
 
+        public bool HasAutoLabeled { get; set; } = false;
+
         public long ViewerCount { get; set; } = 0;
 
         public long CommentCount { get; set; } = 0;

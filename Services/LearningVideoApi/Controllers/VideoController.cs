@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LearningVideoApi.Dtos.Video;
 using LearningVideoApi.Infrastructure;
+using LearningVideoApi.Infrastructure.Entities.SavedVocabularies;
 using LearningVideoApi.Infrastructure.Entities.Topics;
 using LearningVideoApi.Infrastructure.Entities.Videos;
 using LearningVideoApi.Infrastructure.Exceptions;
@@ -20,6 +21,7 @@ namespace LearningVideoApi.Controllers
         private readonly IMapper _mapper;
         private readonly IRepository<VideoEntity> _videoRepo;
         private readonly IRepository<TopicEntity> _topicRepo;
+        private readonly IRepository<SavedVocaEntity> _saveVocaRepo;
         private readonly IUnitOfWork _unitOfWork;
         private readonly LearningVideoDbContext _dbContext;
 
@@ -27,6 +29,7 @@ namespace LearningVideoApi.Controllers
             IMapper mapper,
             IRepository<VideoEntity> videoRepo,
             IRepository<TopicEntity> topicRepo,
+            IRepository<SavedVocaEntity> saveVocaRepo,
             LearningVideoDbContext dbContext,
             IHttpContextAccessor httpContextAccessor,
             IUnitOfWork unitOfWork) : base(httpContextAccessor)
@@ -35,6 +38,7 @@ namespace LearningVideoApi.Controllers
             _videoRepo = videoRepo;
             _topicRepo = topicRepo;
             _unitOfWork = unitOfWork;
+            _saveVocaRepo = saveVocaRepo;
             _dbContext = dbContext;
         }
 
@@ -52,11 +56,11 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.Subtitles.OrderBy(sub => sub.Id))
                 .OrderByDescending(x => x.CreatedAt)
                 .Where(x => !x.IsDeleted)
-                .Where(x => !string.IsNullOrEmpty(level) 
-                    ? (x.Level.Equals(level)) 
+                .Where(x => !string.IsNullOrEmpty(level)
+                    ? (x.Level.Equals(level))
                     : true)
-                .Where(p => !string.IsNullOrEmpty(search) 
-                    ? p.SearchVector.Matches(EF.Functions.ToTsQuery(search + ":*")) 
+                .Where(p => !string.IsNullOrEmpty(search)
+                    ? p.SearchVector.Matches(EF.Functions.ToTsQuery(search + ":*"))
                     : true);
 
             if (query.Offset.HasValue && query.Limit.HasValue)
@@ -80,7 +84,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
-                .Include(x => x.Subtitles)
+                .Include(x => x.Subtitles.OrderBy(sub => sub.Id))
                 .FirstOrDefault(x => x.Id.Equals(chineseId) && !x.IsDeleted)
                     ?? throw new AppException("Video does not exist");
 
@@ -95,7 +99,7 @@ namespace LearningVideoApi.Controllers
                 .GetQueryableNoTracking()
                 .FirstOrDefault(x => x.Title.Equals(value.Title) && !x.IsDeleted) != null)
                 throw new AppException("Video is already created");
-            
+
 
             using (_unitOfWork.Begin())
             {
@@ -140,12 +144,38 @@ namespace LearningVideoApi.Controllers
                     ?? throw new AppException("Video not found");
 
             video.Title = value.Title;
-            video.Level = value.Level;
             video.Description = value.Description;
             video.LastUpdated = DateTime.Now;
 
+            if (!value.Level.Equals("-1"))
+            {
+                video.Level = value.Level;
+            } 
+            else
+            {
+                video.HasAutoLabeled = true;
+                var commonLevel = _saveVocaRepo
+                    .GetQueryableNoTracking()
+                    .Include(x => x.Vocabulary)
+                    .Where(x => !x.IsDeleted)
+                    .Where(x => x.UserId == 2)
+                    .Where(x => x.Vocabulary != null)
+                    .Where(x => x.VideoId.Equals(id))
+                    .GroupBy(x => x.Vocabulary.Level)
+                    .Select(x => new
+                    {
+                        Level = x.Key,
+                        Count = x.Count(),
+                    })
+                    .Where(x => x.Level != null)
+                    .ToList()
+                    .OrderByDescending(x => x.Count)
+                    .First();
 
-             
+                video.Level = commonLevel.Level.ToString();
+                
+            }
+
 
             foreach (var updateSubtitleDto in value.Subtitles)
             {
@@ -156,17 +186,17 @@ namespace LearningVideoApi.Controllers
                 _dbContext.Entry(subtitle).CurrentValues.SetValues(subtitle);
             }
 
-      
+
             if (!value.Topics.Any())
             {
-                throw new AppException("Topics must not be empty");    
+                throw new AppException("Topics must not be empty");
             }
 
             video.TopicVideos.Clear();
             foreach (var topic in value.Topics)
             {
 
-                
+
 
                 video.TopicVideos.Add(AddTopicToVideo(video, topic));
             }
@@ -198,7 +228,7 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Where(x => !x.IsDeleted);
-          
+
 
             if (query.Offset.HasValue && query.Limit.HasValue)
             {
@@ -222,7 +252,7 @@ namespace LearningVideoApi.Controllers
                 .Include(x => x.TopicVideos)
                 .ThenInclude(topicVideo => topicVideo.Topic)
                 .Where(x => !x.IsDeleted);
-     
+
 
             if (query.Offset.HasValue && query.Limit.HasValue)
             {

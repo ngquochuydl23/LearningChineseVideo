@@ -9,6 +9,7 @@
     "dev": "env-cmd -f .env.local next",
     "dev:staging": "env-cmd -f .env.staging next",
     "build:staging": "env-cmd -f .env.staging next build",
+    "dev:prod": "env-cmd -f .env.production next",
     "build": "env-cmd -f .env.production next build",
     "start": "env-cmd -f .env.production next start",
     "start:staging": "env-cmd -f .env.staging next start",
